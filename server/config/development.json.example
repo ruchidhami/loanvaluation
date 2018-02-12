@@ -1,0 +1,10 @@
+{
+    "PORT": 3001,
+    "MONGODB_URI": "mongodb://127.0.0.1/LoanValuation",
+    "FIRST_NAME":"Ruchi",
+    "LAST_NAME":"Dhami",
+    "USERNAME":"rdhami",
+    "EMAIL":"rdhami@gmail.com",
+    "PASSWORD":"password",
+    "ROLE":"admin"
+}

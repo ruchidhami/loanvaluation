@@ -1,0 +1,19 @@
+{
+  "name": "epsloan",
+  "version": "1.0.0",
+  "description": "EPS APIs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "mongoosastic": "^4.3.0",
+    "mongoose": "^4.13.4",
+    "nconf": "^0.9.1",
+    "require-dir": "^0.3.2",
+    "underscore": "^1.8.3"
+  }
+}
