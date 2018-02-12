@@ -1,0 +1,1631 @@
+<app-loader *ngIf="loader"></app-loader>
+<mat-sidenav-container class="sidenav-fab-container">
+  <mat-sidenav #sidenav mode="side" opened="true" class="mat-elevation-z2">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <div class="main-container">
+    <header>
+      <app-header (openNav)="toggleNav()"></app-header>
+    </header>
+    <div class="container">
+      <h2 class="page-ttl">Add New Valuation </h2>
+      <mat-tab-group class="vertical-tab" [selectedIndex]="selectedIndex">
+        <mat-tab label="General Information of Client">
+          <form #createCientForm="ngForm" (ngSubmit)="selectTab(1,createCientForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="client-info" *ngFor="let client of clients; let i = index;">
+                <div class="formttl">
+                  <h2>Client {{i + 1 }}</h2>
+                </div>
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Is Client organization?:</label>
+                    <mat-radio-group name="clientOrganization{{i+1}}" [(ngModel)]="client.clientOrganization"
+                                     id="clientOrganization{{i+1}}" #clientOrganization="ngModel">
+                      <mat-radio-button [value]=true>Yes</mat-radio-button>
+                      <mat-radio-button [value]=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div> <!-- esp-row ends -->
+                  <div class="esp-row">
+                    <label class="ttl">Personal Information:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="clientfullName{{i+1}}" [(ngModel)]="client.fullName"
+                                     id="clientfullName{{i+1}}" #clientfullName="ngModel"
+                                     placeholder="Client Name"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="contactNumber{{i+1}}" [(ngModel)]="client.contactNumber"
+                                     id="contactNumber{{i+1}}" #contactNumber="ngModel" placeholder="Contact Number"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Address:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Ward No." name="wardNo{{i+1}}"
+                                     [(ngModel)]="client.address.wardNo" type="number"
+                                     id="wardNo{{i+1}}" #wardNo="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="VDC / Municipality" name="vdc{{i+1}}"
+                                     [(ngModel)]="client.address.vdc"
+                                     id="vdc{{i+1}}" #vdc="ngModel"
+                                     required>
+                            </mat-form-field>
+
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="District" name="district{{i+1}}"
+                                     [(ngModel)]="client.address.district"
+                                     id="district{{i+1}}" #district="ngModel"
+                                     required>
+                            </mat-form-field>
+
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Citizenship:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Citizenship No." name="citizenshipNumber{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.citizenshipNumber"
+                                     id="citizenshipNumber{{i+1}}" #citizenshipNumber="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+
+                            <mat-form-field>
+                              <input matInput md-no-float name="date"
+                                     [(ngModel)]="client.citizenshipInformation.issuedDate" id="date-picker"
+                                     #issueddDate="ngModel"
+                                     placeholder="Issued Date"
+                                     required>
+                              <!--<input matInput disabled [matDatepicker]="issuedDate" name="issuedDate{{i+1}}"-->
+                              <!--[(ngModel)]="client.citizenshipInformation.issuedDate"-->
+                              <!--id="issuedDate{{i+1}}" #issuedDate="ngModel"-->
+                              <!--placeholder="Issued Date"-->
+                              <!--required>-->
+                              <!--<mat-datepicker-toggle-->
+                              <!--matSuffix [for]="issuedDate">-->
+                              <!--</mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #issuedDate [disabled]="false"></mat-datepicker>-->
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Issued Office" name="issuedOffice{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.issuedOffice"
+                                     id="issuedOffice{{i+1}}" #issuedOffice="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Family Details:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Father's Name" name="fatherName{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.fatherName"
+                                     id="fatherName{{i+1}}" #fatherName="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Mother's Name" name="motherName{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.motherName"
+                                     id="motherName{{i+1}}" #motherName="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Spouse's Name" name="spouse{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.spouse"
+                                     id="spouse{{i+1}}" #spouse="ngModel">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Father in law's Name"
+                                     name="fatherInLawName{{i+1}}"
+                                     [(ngModel)]="client.citizenshipInformation.fatherInLawName"
+                                     id="fatherInLawName{{i+1}}" #fatherInLawName="ngModel">
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+                </div>
+                <a mat-mini-fab class="delete-btn" (click)="removeClient(i)" *ngIf="i > 0">
+                  <mat-icon>remove</mat-icon>
+                </a>
+              </div> <!--client-info ends-->
+              <a mat-fab class="add-btn" (click)="addClient()">
+                <mat-icon aria-label="Add Client" matTooltip="Add Client"
+                          matTooltipPosition="before">person_add
+                </mat-icon>
+              </a>
+            </div> <!--tab-content ends -->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="General Information of Owner of property">
+          <form #createOwnerForm="ngForm" (ngSubmit)="selectTab(2,createOwnerForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="owner-info" *ngFor="let owner of owners; let i = index;">
+                <div class="formttl">
+                  <h2>Owner {{i + 1 }}</h2>
+                </div>
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Personal Information:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="fullNames{{i+1}}" [(ngModel)]="owner.fullName"
+                                     id="fullNames{{i+1}}" #fullNames="ngModel" placeholder="Owner Name"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="contactNumbers{{i+1}}" [(ngModel)]="owner.contactNumber"
+                                     id="contactNumbers{{i+1}}" #contactNumbers="ngModel" placeholder="Contact Number"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Address:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Ward No." name="wardNos{{i+1}}"
+                                     [(ngModel)]="owner.address.wardNo" type="number"
+                                     id="wardNos{{i+1}}" #wardNos="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="VDC / Municipality" name="vdcs{{i+1}}"
+                                     [(ngModel)]="owner.address.vdc"
+                                     id="vdcs{{i+1}}" #vdcs="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="District" name="districts{{i+1}}"
+                                     [(ngModel)]="owner.address.district"
+                                     id="districts{{i+1}}" #districts="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Citizenship:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Citizenship No." name="citizenshipNumbers{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.citizenshipNumber"
+                                     id="citizenshipNumbers{{i+1}}" #citizenshipNumbers="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput disabled [matDatepicker]="issuedDate" placeholder="Issued Date"
+                                     name="issuedDates{{i+1}}" [(ngModel)]="owner.citizenshipInformation.issuedDate"
+                                     id="issuedDates{{i+1}}" #issuedDates="ngModel">
+                              <mat-datepicker-toggle matSuffix [for]="issuedDate"></mat-datepicker-toggle>
+                              <mat-datepicker #issuedDate [disabled]="false"></mat-datepicker>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Issued Office" name="issuedOffices{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.issuedOffice"
+                                     id="issuedOffices{{i+1}}" #issuedOffices="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Family Details:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Father's Name" name="fatherNames{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.fatherName"
+                                     id="fatherNames{{i+1}}" #fatherNames="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Mother's Name" name="motherNames{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.motherName"
+                                     id="motherNames{{i+1}}" #motherNames="ngModel"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Spouse's Name" name="spouses{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.spouse"
+                                     id="spouses{{i+1}}" #spouses="ngModel">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Father in law's Name"
+                                     name="fatherInLawNames{{i+1}}"
+                                     [(ngModel)]="owner.citizenshipInformation.fatherInLawName"
+                                     id="fatherInLawNames{{i+1}}" #fatherInLawNames="ngModel">
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+                </div>
+                <a mat-mini-fab class="delete-btn" (click)="removeOwner(i)" *ngIf="i > 0">
+                  <mat-icon>remove</mat-icon>
+                </a>
+              </div> <!--Owner-info ends-->
+
+              <a mat-fab class="add-btn" (click)="addOwner()">
+                <mat-icon aria-label="Add Owner" matTooltip="Add Owner" matTooltipPosition="before">person_add
+                </mat-icon>
+              </a>
+            </div> <!--tab-content ends -->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Land and Building Information">
+          <form #createLnbForm="ngForm" (ngSubmit)="selectTab(3,createLnbForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="lb-info">
+                <div class="form-content">
+                  <div class="esp-row">
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <label class="ttl">Type of Property</label>
+                            <mat-form-field>
+                              <mat-select placeholder="Select Type of Property"
+                                          [(ngModel)]="propertyType.typeOfProperty"
+                                          id="typeOfProperty" #typeOfProperty="ngModel" name="typeOfProperty" required>
+                                <mat-option (click)="removeBuilding()" value="land"> Land</mat-option>
+                                <mat-option (click)="addBuilding()" value="lnb"> Land and Building
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="typeOfProperty.errors && ( typeOfProperty.dirty || typeOfProperty.touched || createLnbForm.submitted)">
+                            </mat-error>
+                          </td>
+                          <td>
+                            <label class="ttl">Status of Report</label>
+                            <mat-form-field>
+                              <mat-select placeholder="Select Type of Property"
+                                          [(ngModel)]="propertyType.statusOfReport"
+                                          id="statusOfReport" #statusOfReport="ngModel" name="statusOfReport" required>
+                                <mat-option value="siteVisited"> Site Visited</mat-option>
+                                <mat-option value="startShortly"> Will be started shortly</mat-option>
+                                <mat-option value="isOnHold"> Is on hold</mat-option>
+                                <mat-option value="summarySent"> Summary Sent</mat-option>
+                                <mat-option value="reportCompleted"> Final Report Completed</mat-option>
+                                <mat-option value="reportSent"> Final Report Sent</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <mat-error
+                              *ngIf="statusOfReport.errors && ( statusOfReport.dirty || statusOfReport.touched || createLnbForm.submitted)">
+                            </mat-error>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row-wrapper" [style.display]="toggoleShowHide">
+
+                    <div class="esp-row">
+                      <label class="ttl">Building Information</label>
+                      <div class="multi-feilds">
+                        <table>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput placeholder="Type of Ownership"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.typeOfOwnerShip"
+                                       id="typeOfOwnerShipss" #typeOfOwnerShipss="ngModel" name="typeOfOwnerShipss"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || typeOfOwnerShipss.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput placeholder="Purpose of the building"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.purposeOfBuilding"
+                                       id="purposeOfBuilding" #purposeOfBuilding="ngModel" name="purposeOfBuilding"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || purposeOfBuilding.touched">
+                              </mat-form-field>
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Type of structure"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.typeOfStructure"
+                                       id="typeOfStructure" #typeOfStructure="ngModel" name="typeOfStructure"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || typeOfStructure.touched ">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Type of foundation"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.typeOfFoundation"
+                                       id="typeOfFoundation" #typeOfFoundation="ngModel" name="typeOfFoundation"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || typeOfFoundation.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Height of each floor" type="number"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.heightOfEachFloor"
+                                       id="heightOfEachFloor" #heightOfEachFloor="ngModel" name="heightOfEachFloor"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || heightOfEachFloor.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Area per drawing" type="text"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.perDrawingArea"
+                                       id="areaPerDrawing" #areaPerDrawing="ngModel" name="areaPerDrawing"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || areaPerDrawing.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Thickness of slab (In Inches)"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.thicknessOfSlab"
+                                       id="thicknessOfSlab" #thicknessOfSlab="ngModel" name="thicknessOfSlab"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || thicknessOfSlab.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Thickness of wall (In Inches)"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.thicknessOfWall"
+                                       id="thicknessOfWall" #thicknessOfWall="ngModel" name="thicknessOfWall"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || thicknessOfWall.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Building Age"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.buildingAge"
+                                       id="buildingAge" #buildingAge="ngModel" name="buildingAge" type="number"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || buildingAge.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Building Expected Life"
+                                       [(ngModel)]="buildingTypeInformation.buildingInfo.buildingExpectedLife"
+                                       id="buildingExpectedLife" #buildingExpectedLife="ngModel"
+                                       name="buildingExpectedLife" type="number"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || buildingExpectedLife.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="multi-feilds">
+                          <table>
+                            <tr>
+                              <td>
+                                <label>Sewer facility on Building</label>
+                              </td>
+                              <td>
+                                <mat-radio-group
+                                  [(ngModel)]="buildingTypeInformation.buildingInfo.sewerFacilityOnBuilding"
+                                  id="sewerFacilityOnBuilding" #sewerFacilityOnBuilding="ngModel"
+                                  name="sewerFacilityOnBuilding"
+                                  [required]="propertyType.typeOfProperty === 'lnb' || sewerFacilityOnBuilding.touched">
+                                  <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                  <mat-radio-button [value]=false>No</mat-radio-button>
+                                </mat-radio-group>
+                              </td>
+                              <td style="width: 30%">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label>Water facility on Building</label>
+                              </td>
+                              <td>
+                                <mat-radio-group
+                                  [(ngModel)]="buildingTypeInformation.buildingInfo.waterFacilityOnBuilding"
+                                  id="waterFacilityOnBuilding" #waterFacilityOnBuilding="ngModel"
+                                  name="waterFacilityOnBuilding"
+                                  [required]="propertyType.typeOfProperty === 'lnb' || waterFacilityOnBuilding.touched">
+                                  <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                  <mat-radio-button [value]=false>No</mat-radio-button>
+                                </mat-radio-group>
+                              </td>
+                              <td style="width: 30%">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <label>Electricity facility on Building</label>
+                              </td>
+                              <td>
+                                <mat-radio-group
+                                  [(ngModel)]="buildingTypeInformation.buildingInfo.electricityFacilityOnBuilding"
+                                  id="electricityFacilityOnBuilding"
+                                  #electricityFacilityOnBuilding="ngModel" name="electricityFacilityOnBuilding"
+                                  [required]="propertyType.typeOfProperty === 'lnb' || electricityFacilityOnBuilding.touched">
+                                  <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                  <mat-radio-button [value]=false>No</mat-radio-button>
+                                </mat-radio-group>
+                              </td>
+                              <td style="width: 30%">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div> <!-- esp-row ends -->
+
+                    <div class="esp-row">
+                      <label class="ttl">Building Valuation:</label>
+                      <div class="multi-feilds">
+                        <table>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Number of floors"
+                                       [(ngModel)]="buildingTypeInformation.buildingValuation.noOfFloors" type="number"
+                                       id="noOfFloors" #noOfFloors="ngModel" name="noOfFloors"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || noOfFloors.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Rate per sq feet - Ground Floor" type="number"
+                                       [(ngModel)]="buildingTypeInformation.buildingValuation.ratePerSqFeetGroundFloor"
+                                       id="ratePerSqFeetGroundFloor" #ratePerSqFeetGroundFloor="ngModel"
+                                       name="ratePerSqFeetGroundFloor"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || ratePerSqFeetGroundFloor.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Rate per sq feet - Other Floors" type="number"
+                                       [(ngModel)]="buildingTypeInformation.buildingValuation.ratePerSqFeetOtherFloor"
+                                       id="ratePerSqFeetOtherFloor" #ratePerSqFeetOtherFloor="ngModel"
+                                       name="ratePerSqFeetOtherFloor"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || ratePerSqFeetOtherFloor.touched">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <input matInput
+                                       placeholder="Base Area"
+                                       [(ngModel)]="buildingTypeInformation.buildingValuation.baseArea" type="number"
+                                       id="baseArea" #baseArea="ngModel" name="baseArea"
+                                       [required]="propertyType.typeOfProperty === 'lnb' || baseArea.touched">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+
+                              <a mat-raised-button color="primary" (click)="formCalculation()" class="btn-block">
+                                Form Calculation Grid
+                              </a>
+
+                            </td>
+                          </tr>
+                        </table>
+                        <br/><br/>
+                      </div>
+                    </div> <!-- esp-row ends -->
+
+                    <div class="esp-row">
+                      <label class="ttl">Value of Building</label>
+                      <div class="multi-feilds">
+                        <p-dataTable [value]="buildingTypeInformation.valueOfBuilding" [editable]="true">
+                          <p-column header="Building">
+                            <ng-template let-col let-t="rowData" let-index="rowIndex" pTemplate type="body">
+                              <span>{{ index + 1 }}</span>
+                            </ng-template>
+                          </p-column>
+                          <p-column field="floorName" header="floorName"></p-column>
+                          <p-column field="unit" header="unit" [editable]="true"></p-column>
+                          <p-column field="area" header="area" [editable]="true"></p-column>
+                          <p-column field="rate" header="rate" [editable]="true"></p-column>
+                          <p-column header="Total">
+                            <ng-template let-col let-t="rowData" let-index="rowIndex" pTemplate type="body">
+                                <span>{{
+                                  valueOfBuildingTotal(t, index)
+                                }}</span>
+                            </ng-template>
+                          </p-column>
+                          <p-footerColumnGroup>
+                            <p-row>
+                              <p-column footer="Total Cost of Civil Works:" colspan="5"></p-column>
+                              <p-column footer={{totalAmount()}}></p-column>
+                            </p-row>
+
+                            <p-row>
+                              <p-column footer="Sanitary and Electrical @10% of Civil Works:" colspan="5"></p-column>
+                              <p-column footer={{tenPercent()}}></p-column>
+                            </p-row>
+
+                            <p-row>
+                              <p-column footer="Total Cost of the Building:" colspan="5"></p-column>
+                              <p-column footer={{netTotal()}}></p-column>
+                            </p-row>
+                          </p-footerColumnGroup>
+                        </p-dataTable>
+                      </div>
+                    </div> <!-- esp-row ends -->
+                  </div>
+                </div>
+              </div>
+            </div> <!--tab-content ends-->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Location of Property">
+          <form #createLocationForm="ngForm" (ngSubmit)="selectTab(4,createLocationForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="location-info">
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Location Information:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Plot Number"
+                                     type="number" [(ngModel)]="property.plotNo"
+                                     id="plotNo" #plotNo="ngModel" name="plotNo"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.location.typeOfLocation"
+                                     id="typeOfLocation" #typeOfLocation="ngModel" name="typeOfLocation"
+                                     placeholder="Type of Location"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Location Address:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="Ward No." type="number"
+                                     [(ngModel)]="property.location.wardNo"
+                                     id="wardNo" #wardNo="ngModel" name="wardNo"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="VDC / Municipality"
+                                     [(ngModel)]="property.location.vdc"
+                                     id="vdc" #vdc="ngModel" name="vdc"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float placeholder="District"
+                                     [(ngModel)]="property.location.district"
+                                     id="district" #district="ngModel" name="district"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Location Detail:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <mat-select placeholder="Select Shape of Land" [(ngModel)]="property.location.shapeOfLand"
+                                          id="shapeOfLand" #shapeOfLand="ngModel" name="shapeOfLand"
+                                          required>
+                                <mat-option value="plain"> Plain</mat-option>
+                                <mat-option value="geometric"> Geometric</mat-option>
+                                <mat-option value="irregular"> Irregular</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.location.nearestMarket"
+                                     id="nearestMarket" #nearestMarket="ngModel" name="nearestMarket"
+                                     placeholder="Nearest Market"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.location.distanceFromHighway"
+                                     id="distanceFromHighway" #distanceFromHighway="ngModel" name="distanceFromHighway"
+                                     placeholder="Distance from Highway"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.location.highTensionLine"
+                                     id="highTensionLine" #highTensionLine="ngModel" name="highTensionLine"
+                                     placeholder="High tension line above the site"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                </div>
+
+              </div> <!--location-info ends-->
+            </div> <!--tab-content ends -->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Description of Property">
+          <form #createDescriptionForm="ngForm"
+                (ngSubmit)="selectTab(5,createDescriptionForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="property-info">
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Property Information:</label>
+
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <mat-select placeholder="Select Type of Ownership"
+                                          [(ngModel)]="property.description.typeOfOwnership"
+                                          id="typeOfOwnership" #typeOfOwnership="ngModel" name="typeOfOwnership"
+                                          required>
+                                <mat-option value="single"> Single</mat-option>
+                                <mat-option value="guthi"> Guthi</mat-option>
+                                <mat-option value="join"> Joint</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <mat-select placeholder="Select Level of Land"
+                                          [(ngModel)]="property.description.levelOfLand"
+                                          id="levelOfLand" #levelOfLand="ngModel" name="levelOfLand"
+                                          required>
+                                <mat-option value="general"> General</mat-option>
+                                <mat-option value="plain"> Plain</mat-option>
+                                <mat-option value="slop"> Slop</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Nature of Land:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.description.topographyOfLand"
+                                     id="topographyOfLand" #topographyOfLand="ngModel" name="topographyOfLand"
+                                     placeholder="Topography of Land"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.description.natureOfSoil"
+                                     id="natureOfSoil" #natureOfSoil="ngModel" name="natureOfSoil"
+                                     placeholder="Nature of Land"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.description.accessOfLand"
+                                     id="accessOfLand" #accessOfLand="ngModel" name="accessOfLand"
+                                     placeholder="Access of the land"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.description.nature"
+                                     id="nature" #nature="ngModel" name="nature"
+                                     placeholder="Nature of the area"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Facilities:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <label>Any construction on the land</label>
+                          </td>
+                          <td>
+                            <mat-radio-group [(ngModel)]="property.description.constructionOnLand"
+                                             id="constructionOnLand" #constructionOnLand="ngModel"
+                                             name="constructionOnLand"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                          <td style="width: 30%">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Sewer Facility On the Land</label>
+                          </td>
+                          <td>
+                            <mat-radio-group [(ngModel)]="property.description.sewerFacility"
+                                             id="sewerFacility" #sewerFacility="ngModel" name="sewerFacility"
+                                             [required]="sewerFacility.errors && (sewerFacility.touched || createDescriptionForm.submitted)">
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                          <td style="width: 30%">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Water facility on that area</label>
+                          </td>
+                          <td>
+                            <mat-radio-group [(ngModel)]="property.description.waterFacility"
+                                             id="waterFacility" #waterFacility="ngModel" name="waterFacility"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                          <td style="width: 30%">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Electricity Supply on that area</label>
+                          </td>
+                          <td>
+                            <mat-radio-group [(ngModel)]="property.description.electricitySupply"
+                                             id="electricitySupply" #electricitySupply="ngModel"
+                                             name="electricitySupply"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+                </div>
+              </div> <!--property-info ends-->
+            </div> <!--tab content ends-->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Triangulation">
+          <form #createTriangulationForm="ngForm"
+                (ngSubmit)="selectTab(6,createTriangulationForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="triangle-info">
+                <h2>Triangulation</h2>
+
+                <div class="form-content mb40">
+                  <div class="esp-row">
+                    <h3>Total Land Area as per measurement or trace paper</h3>
+                    <mat-form-field>
+                      <input matInput md-no-float type="number" [(ngModel)]="property.triangulation.numberOfTriangle"
+                             id="numberOfTriangle" #numberOfTriangle="ngModel" name="numberOfTriangle"
+                             placeholder="Number of Triangle" (ngModelChange)="addTableRow($event)"
+                             required>
+                    </mat-form-field>
+                  </div>
+
+
+                  <div class="esp-row">
+                    <label class="normal-ttl">Unit of Measurement:</label>
+                    <mat-radio-group [(ngModel)]="property.triangulation.unitOfMeasurement" id="unit" #unit="ngModel"
+                                     name="unit">
+                      <mat-radio-button value="meter">Meter</mat-radio-button>
+                      <mat-radio-button value="feet">Feet</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="esp-row mb40">
+
+                    <div class="multi-fields">
+                      <p-dataTable [value]="property.triangulation.totalLandAreaPerMeasurement" [editable]="true">
+                        <p-column header="Triangle">
+                          <ng-template let-col let-t="rowData" let-index="rowIndex" pTemplate type="body">
+                            <span>{{ index + 1 }}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-column field="sideA" header="Side A" [editable]="true"></p-column>
+                        <p-column field="sideB" header="Side B" [editable]="true"></p-column>
+                        <p-column field="sideC" header="Side C" [editable]="true"></p-column>
+                        <p-column header="Total">
+                          <ng-template let-col let-t="rowData" let-index="rowIndex" pTemplate type="body">
+                            <span>{{areaOfTriangle(t,index)}}</span>
+                          </ng-template>
+                        </p-column>
+                        <p-footerColumnGroup>
+                          <p-row>
+                            <p-column footer="Total Area:" colspan="4"></p-column>
+                            <p-column footer={{totalAreaSum()}}></p-column>
+                          </p-row>
+                        </p-footerColumnGroup>
+                      </p-dataTable>
+                    </div>
+                  </div>
+                  <div class="esp-row ">
+                    <h3>Total Land area as per Lal Purja</h3>
+                    <p-dataTable [value]="totalLandAreaPerLalPurja" [editable]="true">
+                      <p-column field="ropani" header="Ropani" [editable]="true"></p-column>
+                      <p-column field="anna" header="Anna" [editable]="true"></p-column>
+                      <p-column field="paisa" header="Paisa" [editable]="true"></p-column>
+                      <p-column field="daam" header="Daam" [editable]="true"></p-column>
+
+                      <p-column header="Total">
+                        <ng-template let-col let-t="rowData" pTemplate type="body">
+                          <span>{{ landAreaStringified(t) }}</span>
+                        </ng-template>
+                      </p-column>
+                    </p-dataTable>
+                  </div> <!-- eps-row -->
+                  <br/><br/>
+                  <div class="esp-row">
+                    <label class="ttl">Parameter Boundaries:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="east"
+                                     [(ngModel)]="property.triangulation.parameterBoundaries.east"
+                                     id="east" #east="ngModel"
+                                     placeholder="East"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="west"
+                                     [(ngModel)]="property.triangulation.parameterBoundaries.west"
+                                     id="west" #west="ngModel" placeholder="West"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="north"
+                                     [(ngModel)]="property.triangulation.parameterBoundaries.north"
+                                     id="north" #north="ngModel"
+                                     placeholder="North"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float name="south"
+                                     [(ngModel)]="property.triangulation.parameterBoundaries.south"
+                                     id="south" #south="ngModel" placeholder="South"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div> <!-- esp-row ends -->
+                </div> <!-- form-content -->
+              </div>
+            </div>
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Valuation of property">
+          <form #createValuationForm="ngForm" (ngSubmit)="selectTab(7,createValuationForm.valid)"
+                novalidate>
+            <div class="tab-content">
+              <div class="valuation-info">
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Personal Information:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.propertyValuation.marketRate"
+                                     id="marketRate" #marketRate="ngModel" name="marketRate"
+                                     placeholder="Market Rate"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.propertyValuation.governmentRate"
+                                     id="governmentRate" #governmentRate="ngModel" name="governmentRate"
+                                     placeholder="Goverment Rate"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Percent of market valuation considered:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field class="example-margin">
+                              <input matInput type="number" [(ngModel)]="property.propertyValuation.marketPercentage"
+                                     id="marketPerValue" #marketPerValue="ngModel" name="marketPerValue"
+                                     placeholder="Considered Market Value in %"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field class="example-margin">
+                              <input matInput type="number"
+                                     [(ngModel)]="property.propertyValuation.governmentPercentage"
+                                     id="govPerValue" #govPerValue="ngModel" name="govPerValue"
+                                     placeholder="Considered Goverment Value in %"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                </div>
+              </div> <!--valuation ends-->
+            </div> <!--tab content ends-->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label=" Legal Aspects of property">
+          <form #createLegalForm="ngForm" (ngSubmit)="selectTab(8,createLegalForm.valid)" novalidate>
+            <div class="tab-content">
+              <div class="legal-info">
+                <div class="form-content">
+
+                  <div class="esp-row">
+                    <label class="ttl">Ownership:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td colspan="2" colspan="2">
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.legalAspectsOfProperty.ownershipOfLand"
+                                     id="ownershipOfLand" #ownershipOfLand="ngModel" name="ownershipOfLand"
+                                     placeholder="Ownership of Land"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <mat-form-field class="remark">
+                                    <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.ownershipComment"
+                                              id="ownershipComment" #ownershipComment="ngModel" name="ownershipComment"
+                                              placeholder="Comment on Ownership Document:" matTextareaAutosize
+                                              matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                              required>
+                                    </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <label class="normal-ttl">Whether the current revenue has been paid:</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.revenue.paidValue"
+                                             id="paidValue" #paidValue="ngModel" name="paidValue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <mat-form-field>
+                              <input matInput disabled [matDatepicker]="paymentDate"
+                                     [(ngModel)]="property.legalAspectsOfProperty.revenue.paymentDate"
+                                     id="paymentDate" #paymentDate="ngModel" name="paymentDate"
+                                     placeholder="Date of payment:"
+                                     required>
+                              <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
+                              <mat-datepicker #paymentDate [disabled]="false"></mat-datepicker>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <mat-form-field class="remark">
+                                  <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.revenue.comments"
+                                            id="comments" #comments="ngModel" name="comments"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                  ></textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!--esp-row ends-->
+
+
+                  <div class="esp-row">
+                    <label class="ttl">Registration Type:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td colspan="2">
+                            <label class="normal-ttl">Whether Normal Sale/Gift:</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.normalValue"
+                                             id="normalValue" #normalValue="ngModel" name="normalValue"
+                                             required>
+                              <mat-radio-button [value]=true>Normal</mat-radio-button>
+                              <mat-radio-button [value]=false>Gift</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <mat-form-field>
+                              <input matInput disabled [matDatepicker]="registrationDate"
+                                     [(ngModel)]="property.legalAspectsOfProperty.registrationDate"
+                                     id="registrationDate" #registrationDate="ngModel" name="registrationDate"
+                                     placeholder="Date of registration:"
+                                     required>
+                              <mat-datepicker-toggle matSuffix [for]="registrationDate"></mat-datepicker-toggle>
+                              <mat-datepicker #registrationDate [disabled]="false"></mat-datepicker>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <label class="normal-ttl">Wheather 1 year 35 days in case of Normal Sale (as per Mulki act
+                              Chap 17, Clause 20
+                              and 2 years 35 days in case of Gift (as per Mulki Act Chap 19 Clause 5) has
+                              elapsed</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.normalSale.value"
+                                             id="vaue" #vaue="ngModel" name="vaue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <mat-form-field class="remark">
+                                  <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.normalSale.comment"
+                                            id="commenttt" #commenttt="ngModel" name="commenttt"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                                  </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!--esp-row ends-->
+
+                  <div class="esp-row">
+                    <label class="ttl">Plots of land on the map:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether the plots are indicated</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.plotIndicatedValue"
+                                             id="plotIndicatedValue" #plotIndicatedValue="ngModel"
+                                             name="plotIndicatedValue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether access is clearly marked on the map prepared by Government
+                              Survey Department</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.clearlyMarkedValue"
+                                             id="clearlyMarkedValue" #clearlyMarkedValue="ngModel"
+                                             name="clearlyMarkedValue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether the shape of the land in the field tally with the
+                              map</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.tallyInMap.value"
+                                             id="vale" #vale="ngModel" name="vale"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field class="comment">
+                                  <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.tallyInMap.comment"
+                                            id="commeents" #commeents="ngModel" name="commeents"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5">
+
+                                  </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Recorded land on Ownership Document:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether the area of land increased or decreased compared to the
+                              recorded in the existing
+                              land Ownership Document</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.areaOfLand.value"
+                                             id="valued" #valued="ngModel" name="valued"
+                                             required>
+                              <mat-radio-button [value]=true>Increased</mat-radio-button>
+                              <mat-radio-button [value]=false>Decreased</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field class="comment">
+                                  <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.areaOfLand.comment"
+                                            id="commentss" #commentss="ngModel" name="commentss"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                                  </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Is the Parameters of Boundary Available</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.boundaryParameters.value"
+                                             id="valuee" #valuee="ngModel" name="valuee"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput disabled [matDatepicker]="paymentReceipt"
+                                     [(ngModel)]="property.legalAspectsOfProperty.boundaryParameters.paymentReceipt"
+                                     id="paymentReceipt" #paymentReceipt="ngModel" name="paymentReceipt"
+                                     placeholder="Date of payment of Receipt:"
+                                     required>
+                              <mat-datepicker-toggle matSuffix [for]="paymentReceipt"></mat-datepicker-toggle>
+                              <mat-datepicker #paymentReceipt [disabled]="false"></mat-datepicker>
+                            </mat-form-field>
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field class="comment">
+                                  <textarea matInput
+                                            [(ngModel)]="property.legalAspectsOfProperty.boundaryParameters.comment"
+                                            id="commmentt" #commmentt="ngModel" name="commmentt"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                                  </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Access to the property</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether free access to the property is Available</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.freeAccessValue"
+                                             id="freeAccessValue" #freeAccessValue="ngModel" name="freeAccessValue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Has whole or part of the land been notified or acquisition for any
+                              other purpose by the
+                              Government of any other statutory body</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.partNotifiedValue"
+                                             id="partNotifiedValue" #partNotifiedValue="ngModel"
+                                             name="partNotifiedValue"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label class="normal-ttl">Whether the boundary of the property is clearly defined at the
+                              site</label>
+                            <mat-radio-group [(ngModel)]="property.legalAspectsOfProperty.boundary.value"
+                                             id="value" #value="ngModel" name="value"
+                                             required>
+                              <mat-radio-button [value]=true>Yes</mat-radio-button>
+                              <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field class="comment">
+                                  <textarea matInput [(ngModel)]="property.legalAspectsOfProperty.boundary.comment"
+                                            id="commentts" #commentts="ngModel" name="commentts"
+                                            placeholder="Comments, if any" matTextareaAutosize
+                                            matAutosizeMinRows="2" matAutosizeMaxRows="5">
+                                  </textarea>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+
+                </div>
+              </div> <!--legal-info ends-->
+            </div> <!--tab-content ends -->
+
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Remarks">
+          <form #createRemarksForm="ngForm" (ngSubmit)="selectTab(9,createRemarksForm.valid)" novalidate>
+            <div class="tab-content">
+              <div class="remark-info">
+                <div class="formttl">
+                  <small>Note: Legal expiry time and ownership information are automatically added. Add any other
+                    remarks
+                    if you have.
+                  </small>
+                </div>
+                <div class="form-content" *ngFor="let remark of property.remarks; let i = index;">
+                  <div class="esp-row">
+                    <label class="ttl">Remark {{i + 1}}:</label>
+                    <div class="single-feild">
+                      <mat-form-field class="remark">
+                          <textarea matInput [(ngModel)]="remark.value"
+                                    id="values{{i + 1}}" #values="ngModel" name="values{{i + 1 }}"
+                                    placeholder="Write your remark here." matTextareaAutosize
+                                    matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                    required></textarea>
+                      </mat-form-field>
+                    </div>
+                    <a mat-mini-fab class="delete-btn" (click)="removeRemarks(i)" *ngIf="i > 0">
+                      <mat-icon>remove</mat-icon>
+                    </a>
+                  </div> <!-- esp-row ends -->
+                </div>
+              </div> <!--Remark ends-->
+              <a mat-fab class="add-btn" (click)="addRemarks()">
+                <mat-icon aria-label="Add Remark" matTooltip="Add Remark" matTooltipPosition="before">add
+                </mat-icon>
+              </a>
+            </div> <!--tab-content ends -->
+
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+
+        </mat-tab>
+        <mat-tab label="Importance">
+          <form #createImportanceForm="ngForm" (ngSubmit)="selectTab(10,createImportanceForm.valid)"
+                novalidate>
+
+            <div class="tab-content">
+              <div class="remark-info">
+                <div class="formttl">
+                  <small>Note: Legal expiry time and ownership information are automatically added. Add any other
+                    importance if you have.
+                  </small>
+                </div>
+                <div class="form-content" *ngFor="let importance of property.importances; let i = index;">
+                  <div class="esp-row">
+                    <label class="ttl">Importance {{i + 1}}:</label>
+                    <div class="single-feild">
+                      <mat-form-field class="remark">
+                          <textarea matInput [(ngModel)]="importance.value"
+                                    id="valuedImportance{{i + 1}}" #valuedImportance="ngModel"
+                                    name="valuedImportance{{i + 1}}"
+                                    placeholder="Write your importance here." matTextareaAutosize
+                                    matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                    required></textarea>
+                      </mat-form-field>
+                    </div>
+                    <a mat-mini-fab class="delete-btn" (click)="removeImportance(i)" *ngIf="i > 0">
+                      <mat-icon>remove</mat-icon>
+                    </a>
+                  </div> <!-- esp-row ends -->
+
+                </div>
+              </div> <!--importance ends-->
+              <a mat-fab class="add-btn" (click)="addImportance()">
+                <mat-icon aria-label="Add Importance" matTooltip="Add Importance" matTooltipPosition="before">add
+                </mat-icon>
+              </a>
+            </div> <!--tab-content ends -->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" class="next-btn">Next</button>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Other Info">
+          <form #createOtherForm="ngForm" (ngSubmit)="(createOtherForm.valid)" novalidate>
+            <div class="tab-content">
+              <div class="location-info">
+                <div class="form-content">
+                  <div class="esp-row">
+                    <label class="ttl">Bank's Information:</label>
+                    <div class="multi-feilds">
+                      <table>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.otherInfo.bankName"
+                                     id="bankName" #bankName="ngModel" name="bankName"
+                                     placeholder="Bank Name"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.otherInfo.bankAddress"
+                                     id="bankAddress" #bankAddress="ngModel" name="bankAddress"
+                                     placeholder="Bank Address"
+                                     required>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field>
+                              <input matInput md-no-float [(ngModel)]="property.otherInfo.preparedBy"
+                                     id="preparedBy" #preparedBy="ngModel" name="preparedBy"
+                                     placeholder="Prepared By"
+                                     required>
+                            </mat-form-field>
+
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <input matInput disabled [matDatepicker]="reportDate"
+                                     [(ngModel)]="property.otherInfo.reportDate"
+                                     id="reportDate" #reportDate="ngModel" name="reportDate"
+                                     placeholder="Reported Date">
+                              <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
+                              <mat-datepicker #reportDate [disabled]="false"></mat-datepicker>
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> <!-- esp-row ends -->
+
+                  <div class="esp-row">
+                    <label class="ttl">Pick the property location.</label>
+                    <div class="map-container">
+                      <app-location-picker *ngIf="!coordinates"
+                                           (onMarkerAdd)="onMarkerAdd($event)">
+                      </app-location-picker>
+                      <app-location-picker *ngIf="coordinates" [coordinates]="coordinates">
+                      </app-location-picker>
+                    </div>
+                  </div> <!-- esp-row ends -->
+                </div>
+              </div> <!--location-info ends-->
+            </div> <!--tab-content ends -->
+            <div class="action-bar">
+              <button mat-raised-button color="primary" type="submit" *ngIf="!action" (click)="submitValuation()">
+                Submit Valuation
+              </button>
+              <button mat-raised-button color="primary" type="submit" *ngIf="action === 'edit' "
+                      (click)="editValuation()">
+                Edit Valuation
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</mat-sidenav-container>
+
+

@@ -1,0 +1,30 @@
+<app-loader *ngIf="loader"></app-loader>
+<div class="header page-content login-page">
+  <div class="panel">
+    <div class="login-block">
+      <div class="panel-body">
+        <form #loginForm="ngForm" (ngSubmit)="loginSubmit(loginForm.valid)"
+              novalidate>
+          <div class="brand">
+            <img class="brand-img" src="../assets/images/logo.jpg" alt="Loan Valuation">
+            <h2 class="brand-text font-size-18">EPS Loan Valuation Login</h2>
+          </div>
+
+          <mat-form-field>
+            <input matInput placeholder="Enter your email" name="username" [(ngModel)]="admin.username" id="username"
+                   #username="ngModel" required>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="Enter your password" name="password" [(ngModel)]="admin.password"
+                   [type]="hide ? 'password' : 'text'" id="password"
+                   #password="ngModel" required>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="btn-block">Sign in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

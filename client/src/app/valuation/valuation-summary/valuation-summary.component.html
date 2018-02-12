@@ -1,0 +1,330 @@
+<app-loader *ngIf="loader"></app-loader>
+<mat-sidenav-container class="sidenav-fab-container">
+  <mat-sidenav #sidenav mode="side" opened="true" class="mat-elevation-z2">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <div class="main-container">
+    <header>
+      <app-header (openNav)="toggleNav()"></app-header>
+    </header>
+    <div class="container">
+      <div class="pdfDataWrapper">
+        <div class="page page-break">
+          <div class="propery-detail page-break ">
+            <div class="property-page-header">
+
+              <button mat-fab color="primary" (click)="goBack()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <div class="button-row">
+                <button mat-fab (click)="printValuation()">
+                  <mat-icon>print</mat-icon>
+                </button>
+                <button mat-fab (click)="navigateToEdit()" color="primary">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-fab color="warn" (click)="confirmDeleteValuation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <h3>Valuation of Property</h3>
+
+            <ul>
+              <li *ngFor="let owner of detail.owner; let i=index">
+                <label>Owner {{i+1}}</label>
+                <span class="val">{{owner.fullName}}</span>
+              </li>
+              <li>
+                <label>Type of property to be mortgaged</label>
+                <span class="val">{{detail.propertyType.typeOfProperty}}</span>
+              </li>
+              <li>
+                <label>Plot No.</label>
+                <span class="val">{{detail.property.plotNo}}</span>
+              </li>
+              <li>
+                <label>Location</label>
+                <span class="val">{{detail.property.location.vdc}}, {{detail.property.location.district}}</span>
+              </li>
+              <li *ngFor="let client of detail.client; let i = index;">
+                <label>Client {{i+1}}</label>
+                <span class="val">{{client.fullName}}</span>
+              </li>
+            </ul>
+          </div> <!--property detail ends-->
+          <div class="land-valuation page-break ">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Particulars</th>
+                <th>Area of Land (Anna)</th>
+                <th>Rate per Aana</th>
+                <th>Amount</th>
+                <th>Remark</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>Total Government Value of Land</td>
+                <td>{{getAnnaFromSqMeter()}}</td>
+                <td>{{detail.property.propertyValuation.governmentRate}}</td>
+                <td>{{getGovernmentAmount()}}</td>
+                <td>{{getNumberInWords(totalGovAnnaInNumber)}}</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Total Market Value of Land</td>
+                <td>{{getAnnaFromSqMeter()}}</td>
+                <td>{{detail.property.propertyValuation.marketRate}}</td>
+                <td>{{getMarketAmount()}}</td>
+                <td>{{getNumberInWords(totalMarAnnaInNumber)}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="4">Bank Value of Land</td>
+                <td>{{getBankValueAmount()}}</td>
+                <td>Sum {{detail.property.propertyValuation.governmentPercentage}} % of SN1 n
+                  {{detail.property.propertyValuation.marketPercentage}} % of SN2
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">Average Rate of Land per Anna (Taking weightage
+                  {{detail.property.propertyValuation.governmentPercentage}} % of Gov Rate and
+                  {{detail.property.propertyValuation.marketPercentage}} % of market Rate)
+                </td>
+                <td>{{getAverageRatePerAnna()}}</td>
+                <td></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div> <!--land-valuation ends-->
+
+          <div class="building-valuation page-break" *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <h3>Value of Building</h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Particulars</th>
+                <th>Unit</th>
+                <th>Area</th>
+                <th>Rate</th>
+                <th>Amount</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let floor of detail.buildingTypeInformation.valueOfBuilding;let i = index;">
+                <td>{{i + 1}}</td>
+                <td>{{floor.floorName}}</td>
+                <td>{{floor.unit}}</td>
+                <td>{{floor.area}}</td>
+                <td>{{floor.rate}}</td>
+                <td>{{floor.total}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="5">Total Cost of Civil Works:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.costOfWorker}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">Sanitary and Electrical @10% of Civil Works:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.sanitaryCharges}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">Total Cost of the Building:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.totalCost}}</td>
+              </tr>
+              </tfoot>
+            </table>
+          </div> <!-- building-valuation ends-->
+          <div class="valuation-desp page-break" *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <ul>
+              <li>
+                <label>Valuation of Building:</label>
+                <span class="val">{{netTotal()}}</span>
+              </li>
+              <li>
+                <label>Life of Building Considered:</label>
+                <span class="val">{{detail.buildingTypeInformation.buildingInfo.buildingExpectedLife}} Years</span>
+              </li>
+              <li>
+                <label>Age of the Building:</label>
+                <span class="val">{{detail.buildingTypeInformation.buildingInfo.buildingAge}} Year</span>
+              </li>
+              <li>
+                <label>Depreciation Rate:</label>
+                <span class="val">1.5</span>
+              </li>
+              <li>
+                <label>Total Depreciation:</label>
+                <span class="val">{{totalDepreciation()}}</span>
+              </li>
+              <li>
+                <label>Amount of Depreciation:</label>
+                <span class="val">Nrs. {{totalDepreciationAmount()}}</span>
+              </li>
+              <li>
+                <label>Net Value of Building:</label>
+                <span class="val">Nrs. {{netValueOfBuildingAfterDepreciation()}}</span>
+              </li>
+              <li>
+                <label>Average rate of the floor per sqft (After necessary addition and deduction):</label>
+                <span class="val">Nrs. {{averageRateOfFloorAfterDedcution()}}</span>
+              </li>
+            </ul>
+          </div> <!--valuation-desp ends-->
+          <div class="abstract-valuation page-break ">
+            <ul>
+              <li *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+                <label>Bank Value of Land:</label>
+                <span class="val">Nrs. {{netTotal()}}</span>
+              </li>
+              <li>
+                <label>Bank Value of Building:</label>
+                <span class="val">Nrs. {{getBankValueAmount()}}</span>
+              </li>
+              <li>
+                <label>Total Bank Value of the Property:</label>
+                <span class="val">Nrs. {{totalBankValue()}}</span>
+              </li>
+            </ul>
+          </div>
+        </div> <!--page ends-->
+
+        <div class="page page-break ">
+          <h3>2. Summary of Valuation of Property</h3>
+          <div class="propery-detail">
+            <ul>
+              <li *ngFor="let owner of detail.owner; let i = index;">
+                <label>Owner {{i+1}}:</label>
+                <span class="val">{{owner.fullName}}</span>
+              </li>
+              <li>
+                <label>Type of property to be mortgaged:</label>
+                <span class="val">{{detail.propertyType.typeOfProperty}}</span>
+              </li>
+              <li>
+                <label>Plot No.:</label>
+                <span class="val">{{detail.property.plotNo}}</span>
+              </li>
+              <li>
+                <label>Location:</label>
+                <span class="val">{{detail.property.location.vdc}} , {{detail.property.location.wardNo}}, {{detail.property.location.district}}</span>
+              </li>
+              <li *ngFor="let client of detail.client;let i = index;">
+                <label>Client {{i+1}}:</label>
+                <span class="val">{{client.fullName}}</span>
+              </li>
+            </ul>
+          </div> <!--property detail ends-->
+          <div class="total-land page-break ">
+            <h3>Area of the land </h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Ropani</th>
+                <th>Anna</th>
+                <th>Paisa</th>
+                <th>Daam</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let total of areaInformation;let i = index;">
+                <td>{{total.title}}</td>
+                <td>{{total.value.ropani}}</td>
+                <td>{{total.value.anna}}</td>
+                <td>{{total.value.paisa}}</td>
+                <td>{{total.value.daam}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div> <!--total-land ends-->
+          <div class="total-floor page-break " *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <h3>Total Floor area of Building</h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Area</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let build of totalfloorAreaOfBuilding">
+                <td>{{build.particulars}}</td>
+                <td>{{build.area}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div> <!-- Total-floor ends-->
+
+          <div class="parameter-boundaries page-break ">
+            <h3>Parameter of Boundaries </h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Plot No.</th>
+                <th>East</th>
+                <th>West</th>
+                <th>Paisa</th>
+                <th>South</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>{{detail.property.plotNo}}</td>
+                <td>{{detail.property.triangulation.parameterBoundaries.east}}</td>
+                <td>{{detail.property.triangulation.parameterBoundaries.west}}</td>
+                <td>{{detail.property.triangulation.parameterBoundaries.north}}</td>
+                <td>{{detail.property.triangulation.parameterBoundaries.south}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div> <!--parameter-boundaries ends-->
+
+          <div class="property-value page-break ">
+            <h3>Value of the property </h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Particulars</th>
+                <th>Market Value(Nrs.)</th>
+                <th>Bank Value(Nrs.)</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let value of valueOfProperty;let i = index;">
+                <td>{{i+1}}</td>
+                <td>{{value.particulars}}</td>
+                <td>{{value.marketValue}}</td>
+                <td>{{value.bankValue}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div> <!--parameter-boundaries ends-->
+
+          <div class="page-break ">
+            <div class="map-container">
+              <app-location-picker *ngIf="coordinates" [coordinates]="coordinates" (onMarkerAdd)="onMarkerAdd($event)">
+              </app-location-picker>
+            </div>
+          </div> <!-- esp-row ends -->
+
+        </div> <!--page ends-->
+
+      </div>
+
+
+    </div>
+  </div>
+</mat-sidenav-container>
+
+
+

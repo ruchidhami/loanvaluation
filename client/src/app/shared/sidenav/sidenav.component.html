@@ -1,0 +1,16 @@
+<nav #drawer>
+  <a class="sitelogo" routerLink="/valuations"><img class="brand-img" src="../../assets/images/logo.jpg" alt="Loan Valuation"></a>
+  <ul>
+    <h3>Navigation</h3>
+    <li>
+      <a routerLink="/valuations">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        List Valuation</a>
+    </li>
+    <li>
+      <a (click)="goToAddValaution()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        Add Valuation</a>
+    </li>
+  </ul>
+</nav>

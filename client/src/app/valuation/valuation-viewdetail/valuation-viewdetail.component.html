@@ -1,0 +1,827 @@
+<app-loader *ngIf="loader"></app-loader>
+<mat-sidenav-container class="sidenav-fab-container">
+  <mat-sidenav #sidenav mode="side" opened="true" class="mat-elevation-z2">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <div class="main-container">
+    <header>
+      <app-header (openNav)="toggleNav()"></app-header>
+    </header>
+    <div class="container">
+      <div class="pdfDataWrapper">
+
+        <div class="page coverpage page-break-after">
+
+          <div class="property-page-header">
+            <button mat-fab color="primary" (click)="goBack()">
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <div class="button-row">
+              <button mat-fab (click)="printValuation()">
+                <mat-icon>print</mat-icon>
+              </button>
+              <button mat-fab (click)="navigateToEdit()" color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-fab color="warn" (click)="confirmDeleteValuation()">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="pdf-page">
+
+
+            <div class="property-valuation-ttl">
+              <div class="logo">
+                <img src="../../../assets/images/logo.jpg" alt="eps" width="180px" height="auto">
+              </div>
+              <h1>Property Valuation Report (Land)</h1>
+
+            </div> <!--propery-valuation-ttl ends -->
+            <div class="lines">
+              <span class="line"></span>
+            </div>
+
+            <div class="property-location property-owners">
+              <h4>Property to be Valued</h4>
+              Location: {{detail.property.location.wardNo}}, {{detail.property.location.vdc}},
+              {{detail.property.location.district}}
+            </div>
+
+            <div class="property-owners">
+              <h4>Owner</h4>
+              <table class="inline-table">
+                <tr>
+                  <td *ngFor="let owner of detail.owner;let i = index;">
+                    <div class="owner-block">
+                      <div class="owner-name">{{owner.fullName}}</div>
+                      <div class="owner-ward">Ward No.: {{owner.address.wardNo}}</div>
+                      <div class="owner-address">{{owner.address.vdc}},{{owner.address.district}}</div>
+                    </div> <!--owner-block ends-->
+                  </td>
+                </tr>
+              </table>
+            </div> <!--property-owners ends-->
+
+            <div class="property-clients">
+              <h4>Clients</h4>
+              <table class="inline-table">
+                <tr>
+                  <td *ngFor="let client of detail.client;let i = index;">
+                    <div class="owner-block">
+                      <div class="owner-name">{{client.fullName}}</div>
+                      <div class="owner-ward">Ward No.: {{client.address.wardNo}}</div>
+                      <div class="owner-address">{{client.address.vdc}},{{client.address.district}}, Nepal</div>
+                    </div> <!--owner-block ends-->
+                  </td>
+                </tr>
+              </table>
+            </div> <!--property-owners ends-->
+
+            <div class="prepared-submitted-block">
+              <table>
+                <tr>
+                  <td style="width: 70%;">
+                    <div class="prepared-block">
+                      <h5>Prepared By:</h5>
+                      <div class="blockTopTtl">{{detail.property.otherInfo.preparedBy}}</div>
+                      <div class="prepared-name">Engineering and Planning Solution Consultancy Pvt. Ltd.</div>
+                      <div class="prepared-address">Thapathali, Kathmandu, Nepal</div>
+                      <div class="prepared-tel">Tel: 01-5520725</div>
+                      <div class="prepared-email">Email : info@epsconsultant.com.np</div>
+                      <div class="prepared-date">Date: {{detail.property.otherInfo.reportDate}}</div>
+                    </div>
+                  </td>
+                  <td style="width: 30%; text-align: right">
+                    <div class="block submitted" style="text-align: left;">
+                      <h5>Submitted To</h5>
+                      <div class="bankName">{{detail.property.otherInfo.bankName}}</div>
+                      <div class="bankAddress">{{detail.property.otherInfo.bankAddress}}</div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div> <!--prepared-submitted-block end-->
+          </div>
+
+        </div> <!-- page coverpage ends-->
+
+        <div class="page">
+          <div class="largeBlock" *ngFor="let client of detail.client;let i = index;">
+            <h3>General Information of Client</h3>
+            <div class="client-info">
+              <h4>Client {{i+1}}:</h4>
+              <div class="info-blk">
+                <div class="info-ttl">General Information</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Name</label>
+                    <span class="val">{{client.fullName}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Contact Number</label>
+                    <span class="val">{{client.contactNumber}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+              <div class="info-blk">
+                <div class="info-ttl">Address</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Ward Number:</label>
+                    <span class="val">{{client.address.wardNo}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>VDC/Municipality:</label>
+                    <span class="val">{{client.address.vdc}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>District:</label>
+                    <span class="val">{{client.address.district}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+              <div class="info-blk">
+                <div class="info-ttl">Citizenship Information:</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Citizenship Number:</label>
+                    <span class="val">{{client.citizenshipInformation.citizenshipNumber}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Issued Date:</label>
+                    <span class="val">{{client.citizenshipInformation.issuedDate}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Issued Office:</label>
+                    <span class="val">{{client.citizenshipInformation.issuedOffice}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+              <div class="info-blk">
+                <div class="info-ttl">Family Information</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Father's Name:</label>
+                    <span class="val">{{client.citizenshipInformation.fatherName}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Mother's Name:</label>
+                    <span class="val">{{client.citizenshipInformation.motherName}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+            </div> <!--client-info ends -->
+          </div> <!-- largeBlock ends -->
+
+          <div class="largeBlock" *ngFor="let owner of detail.owner;let i = index;">
+            <h3>General Information of Owner</h3>
+            <div class="owner-info">
+              <h4>Owner {{i+1}}:</h4>
+              <div class="info-blk">
+                <div class="info-ttl">General Information</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Name</label>
+                    <span class="val">{{owner.fullName}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Contact Number</label>
+                    <span class="val">{{owner.contactNumber}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+              <div class="info-blk">
+                <div class="info-ttl">Address</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Ward Number:</label>
+                    <span class="val">{{owner.address.wardNo}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>VDC/Municipality:</label>
+                    <span class="val">{{owner.address.vdc}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>District:</label>
+                    <span class="val">{{owner.address.district}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+
+              <div class="info-blk">
+                <div class="info-ttl">Citizenship Information:</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Citizenship Number:</label>
+                    <span class="val">{{owner.citizenshipInformation.citizenshipNumber}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Issued Date:</label>
+                    <span class="val">{{owner.citizenshipInformation.issuedDate}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Issued Office:</label>
+                    <span class="val">{{owner.citizenshipInformation.issuedOffice}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+
+              <div class="info-blk">
+                <div class="info-ttl">Family Information</div>
+                <div class="eps-row">
+                  <div class="col-4">
+                    <label>Father's Name:</label>
+                    <span class="val">{{owner.citizenshipInformation.fatherName}}</span>
+                  </div>
+                  <div class="col-4">
+                    <label>Mother's Name:</label>
+                    <span class="val">{{owner.citizenshipInformation.motherName}}</span>
+                  </div>
+                </div>
+              </div> <!-- info-blk ends-->
+
+            </div> <!--client-info ends -->
+
+          </div> <!-- page ends -->
+        </div>
+
+        <div class="page">
+          <div class="largeBlock">
+            <h3> Location of Property</h3>
+            <div class="info-blk">
+              <div class="info-ttl">Location Information:</div>
+              <div class="eps-row">
+                <div class="col-4">
+                  <label>Plot No.</label>
+                  <span class="val">{{detail.property.plotNo}}</span>
+                </div>
+                <div class="col-4">
+                  <label>Type of location:</label>
+                  <span class="val">{{detail.property.location.typeOfLocation}}</span>
+                </div>
+              </div>
+            </div> <!-- info-blk ends-->
+            <div class="info-blk">
+              <div class="info-ttl">Address</div>
+              <div class="eps-row">
+                <div class="col-4">
+                  <label>Ward Number:</label>
+                  <span class="val">{{detail.property.location.wardNo}}</span>
+                </div>
+                <div class="col-4">
+                  <label>VDC/Municipality:</label>
+                  <span class="val">{{detail.property.location.vdc}}</span>
+                </div>
+                <div class="col-4">
+                  <label>District:</label>
+                  <span class="val">{{detail.property.location.district}}</span>
+                </div>
+              </div>
+            </div> <!-- info-blk ends-->
+            <div class="info-blk">
+              <div class="info-ttl">Location Detail:</div>
+              <div class="eps-row">
+                <div class="col-4">
+                  <label>Shape:</label>
+                  <span class="val">{{detail.property.location.shapeOfLand}}</span>
+                </div>
+                <div class="col-4">
+                  <label>Nearest Market:</label>
+                  <span class="val">{{detail.property.location.nearestMarket}}</span>
+                </div>
+              </div>
+              <div class="eps-row">
+                <div class="col-4">
+                  <label>Distance from Highway:</label>
+                  <span class="val">{{detail.property.location.distanceFromHighway}}</span>
+                </div>
+                <div class="col-4">
+                  <label>High Tension Line above the site:</label>
+                  <span class="val">{{detail.property.location.highTensionLine}}</span>
+                </div>
+              </div>
+            </div>
+
+          </div> <!-- largeBlock ends-->
+
+          <div class="largeBlock page-break ">
+            <h3>Total Area of Land</h3>
+            <div class="total-land">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Ropani</th>
+                  <th>Anna</th>
+                  <th>Paisa</th>
+                  <th>Daam</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let total of areaInformation;let i = index;">
+                  <td>{{total.title}}</td>
+                  <td>{{total.value.ropani}}</td>
+                  <td>{{total.value.anna}}</td>
+                  <td>{{total.value.paisa}}</td>
+                  <td>{{total.value.daam}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div> <!--total-land ends-->
+
+          </div> <!-- largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3> Parameter of Boundaries</h3>
+            <div class="parameter-boundaries">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Plot No.</th>
+                  <th>East</th>
+                  <th>West</th>
+                  <th>North</th>
+                  <th>South</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>{{detail.property.plotNo}}</td>
+                  <td>{{detail.property.triangulation.parameterBoundaries.east}}</td>
+                  <td>{{detail.property.triangulation.parameterBoundaries.west}}</td>
+                  <td>{{detail.property.triangulation.parameterBoundaries.north}}</td>
+                  <td>{{detail.property.triangulation.parameterBoundaries.south}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> <!-- largeBlock ends -->
+
+        </div> <!-- page ends -->
+
+        <div class="page">
+          <h2>Description Of Property</h2>
+          <div class="largeBlock page-break ">
+            <h3>Land</h3>
+            <ul>
+              <li>
+                <label>1. Type of Ownership</label>
+                <span class="val">{{detail.property.description.typeOfOwnership}}</span>
+              </li>
+              <li>
+                <label>2. Shape of the Land</label>
+                <span class="val">{{detail.property.location.shapeOfLand}}</span>
+              </li>
+              <li>
+                <label>3. Level of the land</label>
+                <span class="val">{{detail.property.description.levelOfLand}}</span>
+              </li>
+              <li>
+                <label>4. Topography of Land</label>
+                <span class="val">{{detail.property.description.topographyOfLand}}</span>
+              </li>
+              <li>
+                <label>5. Nature of Soil</label>
+                <span class="val">{{detail.property.description.natureOfSoil}}</span>
+              </li>
+              <li>
+                <label>6. Access of the land</label>
+                <span class="val">{{detail.property.description.accessOfLand}}</span>
+              </li>
+              <li>
+                <label>7. Any Construction on the Land</label>
+                <span class="val">{{detail.property.description.constructionOnLand}}</span>
+              </li>
+              <li>
+                <label>8. Sewer facility of the Land</label>
+                <span class="val">{{detail.property.description.sewerFacility}}</span>
+              </li>
+              <li>
+                <label>9. Water supply facility on that Area</label>
+                <span class="val">{{detail.property.description.waterFacility}}</span>
+              </li>
+              <li>
+                <label>10. Electricity Supply on that area</label>
+                <span class="val">{{detail.property.description.electricitySupply}}</span>
+              </li>
+              <li>
+                <label>11. Nature of the Area</label>
+                <span class="val">{{detail.property.description.nature}}</span>
+              </li>
+              <li>
+                <label>12. Whether the land is located below the high tension electric line</label>
+                <span class="val">{{detail.property.location.highTensionLine}}</span>
+              </li>
+              <li>
+                <label>13. Address of the Land</label>
+                <span class="val">{{detail.property.location.wardNo}}, {{detail.property.location.vdc}}, {{detail.property.location.district}}</span>
+              </li>
+            </ul>
+          </div> <!--large block ends-->
+
+          <div class="largeBlock page-break " *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <h3>Building</h3>
+            <ul>
+              <li *ngFor="let building of buildingInformation;let i = index;">
+                <label>{{i + 1}}. {{building.field}}</label>
+                <span class="val">{{building.value}}</span>
+              </li>
+            </ul>
+          </div>
+        </div> <!--page ends-->
+
+        <div class="page page-break">
+          <h2>Valuation of Property</h2>
+          <div class="propery-detail">
+            <ul>
+              <li *ngFor="let owner of detail.owner;let i = index;">
+                <label>Owner {{i+1}}</label>
+                <span class="val">{{owner.fullName}}</span>
+              </li>
+              <li>
+                <label>Type of property to be mortgaged</label>
+                <span class="val">{{detail.propertyType.typeOfProperty}}</span>
+              </li>
+              <li>
+                <label>Plot No.</label>
+                <span class="val">{{detail.property.plotNo}}</span>
+              </li>
+              <li>
+                <label>Location</label>
+                <span class="val">{{detail.property.location.vdc}}, {{detail.property.location.district}}</span>
+              </li>
+              <li *ngFor="let client of detail.client;let i = index;">
+                <label>Client {{i+1}}</label>
+                <span class="val">{{client.fullName}}</span>
+              </li>
+            </ul>
+          </div> <!--property detail ends-->
+          <div class="land-valuation ">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Particulars</th>
+                <th>Area of Land (Anna)</th>
+                <th>Rate per Aana</th>
+                <th>Amount</th>
+                <th>Remark</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>Total Government Value of Land</td>
+                <td>{{getAnnaFromSqMeter()}}</td>
+                <td>{{detail.property.propertyValuation.governmentRate}}</td>
+                <td>{{getGovernmentAmount()}}</td>
+                <td>{{getNumberInWords(totalGovAnnaInNumber)}}</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Total Market Value of Land</td>
+                <td>{{getAnnaFromSqMeter()}}</td>
+                <td>{{detail.property.propertyValuation.marketRate}}</td>
+                <td>{{getMarketAmount()}}</td>
+                <td>{{getNumberInWords(totalMarAnnaInNumber)}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="4">Bank Value of Land</td>
+                <td>{{getBankValueAmount()}}</td>
+                <td>Sum {{detail.property.propertyValuation.governmentPercentage}} % of SN1 n
+                  {{detail.property.propertyValuation.marketPercentage}} % of SN2
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">Average Rate of Land per Anna (Taking weightage
+                  {{detail.property.propertyValuation.governmentPercentage}} % of Gov Rate and
+                  {{detail.property.propertyValuation.marketPercentage}} % of market Rate)
+                </td>
+                <td>{{getAverageRatePerAnna()}}</td>
+                <td></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div> <!--land-valuation ends-->
+          <div class="building-valuation page-break " *ngIf="detail.propertyType.typeOfProperty === 'lnb'">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>S.N.</th>
+                <th>Particulars</th>
+                <th>Unit</th>
+                <th>Area</th>
+                <th>Rate</th>
+                <th>Amount</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let floor of detail.buildingTypeInformation.valueOfBuilding;let i = index;">
+                <td>{{i + 1}}</td>
+                <td>{{floor.floorName}}</td>
+                <td>{{floor.unit}}</td>
+                <td>{{floor.area}}</td>
+                <td>{{floor.rate}}</td>
+                <td>{{floor.total}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="5">Total Cost of Civil Works:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.costOfWorker}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">Sanitary and Electrical @10% of Civil Works:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.sanitaryCharges}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">Total Cost of the Building:</td>
+                <td>{{detail.buildingTypeInformation.costInfo.totalCost}}</td>
+              </tr>
+              </tfoot>
+            </table>
+          </div> <!-- building-valuation ends-->
+          <div class="valuation-desp page-break " *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <ul>
+              <li>
+                <label>Valuation of Building</label>
+                <span class="val">Nrs. {{netTotal()}}</span>
+              </li>
+              <li>
+                <label>Life of Building Considered</label>
+                <span class="val">{{detail.buildingTypeInformation.buildingInfo.buildingExpectedLife}}</span>
+              </li>
+              <li>
+                <label>Age of the Building</label>
+                <span class="val">{{detail.buildingTypeInformation.buildingInfo.buildingAge}}</span>
+              </li>
+              <li>
+                <label>Depreciation Rate</label>
+                <span class="val">1.5</span>
+              </li>
+              <li>
+                <label>Total Depreciation</label>
+                <span class="val">{{totalDepreciation()}}</span>
+              </li>
+              <li>
+                <label>Amount of Depreciation</label>
+                <span class="val">Nrs. {{totalDepreciationAmount()}}</span>
+              </li>
+              <li>
+                <label>Net Value of Building</label>
+                <span class="val">Nrs. {{netValueOfBuildingAfterDepreciation()}}</span>
+              </li>
+              <li>
+                <label>Average rate of the floor per sqft (After necessary addition and deduction):</label>
+                <span class="val">Nrs. {{averageRateOfFloorAfterDedcution()}}</span>
+              </li>
+            </ul>
+          </div> <!--valuation-desp ends-->
+          <div class="abstract-valuation page-break " *ngIf="detail.buildingTypeInformation.valueOfBuilding.length>0">
+            <ul>
+              <li>
+                <label>Bank Value of Land</label>
+                <span class="val">Nrs. {{netTotal()}}</span>
+              </li>
+              <li>
+                <label>Bank Value of Building</label>
+                <span class="val">Nrs. {{getBankValueAmount()}}</span>
+              </li>
+              <li>
+                <label>Total Bank Value of the Property</label>
+                <span class="val">Nrs. {{totalBankValue()}}</span>
+              </li>
+            </ul>
+          </div>
+        </div> <!--page ends-->
+
+        <div class="page">
+          <div class="largeBlock page-break ">
+            <h3>Legal Aspect of Property</h3>
+            <div class="desp">
+              <p>A number of local people and landowners in the vicinity were interviewed and to the best of our
+                knowledge , no legal dispute has been recorded. Ownership of property has been verified on the basis of
+                Title Deed Certificate (Lalpurja), interview with Client and the Local People during the field survey in
+                2016-01-16 </p>
+              <p>Following legally related documents have been checked and noted which are provided by the bank and
+                client as under:</p>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Land</h3>
+            <div class="desp">
+              <p>Land Ownership Document(Lalpurja)</p>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Land Ownership Document</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Type of Ownership</label>
+                  <span class="val">{{detail.property.description.typeOfOwnership}}</span>
+                </li>
+                <li>
+                  <label>2. Ownership of Land</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.ownershipOfLand}}</span>
+                </li>
+                <li *ngFor="let owner of detail.owner;let i = index;">
+                  <label>3. Name of the owner</label>
+                  <span class="val">{{owner.fullName}}</span>
+                </li>
+                <li>
+                  <label>4. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.ownershipComment}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Land Revenue (Malpot)</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Whether the Current/Revenue has been paid</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.revenue.paidValue}}</span>
+                </li>
+                <li>
+                  <label>2. Date of Payment of Receipt</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.revenue.paymentDate}}</span>
+                </li>
+                <li>
+                  <label>3. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.revenue.comments}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Land Registration Paper</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Whether Normal Sale/Gift</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.normalValue}}</span>
+                </li>
+                <li>
+                  <label>2. Date of Registration</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.registrationDate}}</span>
+                </li>
+                <li>
+                  <label>3. Whether 1 year 35 days in case of Normal Sale (as per Mulki act Chap 17, Clause 20, and 2
+                    years 35 days in case of Gift (as per Mulki act Chap 19 Clause 5) has elapsed</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.normalSale.value}}</span>
+                </li>
+                <li>
+                  <label>4. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.normalSale.comment}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Maps of the Plots prepared by Government Survey Department</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Whether the plots are indicated</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.plotIndicatedValue}}</span>
+                </li>
+                <li>
+                  <label>2. Whether access is clearly marked on the map prepared by Government Survey Department</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.clearlyMarkedValue}}</span>
+                </li>
+                <li>
+                  <label>3. Whether the shape of the land in the field tally with the map</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.tallyInMap.value}}</span>
+                </li>
+                <li>
+                  <label>4. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.tallyInMap.comment}}</span>
+                </li>
+                <li>
+                  <label>5. Whether the area of land increased or decreased compared to the recorded in the existing
+                    land Ownership Document</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.areaOfLand.value}}</span>
+                </li>
+                <li>
+                  <label>6. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.areaOfLand.comment}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Certificate of Parameters of Boundary</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Is the Parameters of the Boundary Available</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.boundaryParameters.value}}</span>
+                </li>
+                <li>
+                  <label>2. Date of Certification</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.boundaryParameters.paymentReceipt}}</span>
+                </li>
+                <li>
+                  <label>3. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.boundaryParameters.comment}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>General</h3>
+            <div class="desp">
+              <ul>
+                <li>
+                  <label>1. Whether free access to the property is Available</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.freeAccessValue}}</span>
+                </li>
+                <li>
+                  <label>2. Has whole or part of the land been notified or acquisition for any other purpose by the
+                    Government of any other statutory body</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.partNotifiedValue}}</span>
+                </li>
+                <li>
+                  <label>3. Whether the boundary of the property is clearly defined at the site</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.boundary.value}}</span>
+                </li>
+                <li>
+                  <label>4. Comments, if any</label>
+                  <span class="val">{{detail.property.legalAspectsOfProperty.boundary.comment}}</span>
+                </li>
+              </ul>
+            </div>
+          </div> <!--largeBlock ends -->
+        </div> <!--page ends -->
+
+        <div class="page">
+          <div class="largeBlock page-break ">
+            <h3>Limiting Conditions</h3>
+            <ol>
+              <li>The opinion of Value Stated is based on the facts and assumptions identified in this report. The
+                valuator takes no responsibility for changes in market conditions.
+              </li>
+              <li>The opinion of value stated is based on the information that has been available to the valuator at
+                the time; the valuation analysis has been conducted. The Value of the Property may change substantially
+                with time and Valuator reserves the right to alter the Opinion of Value Stated if relevant information
+                is available later.
+              </li>
+            </ol>
+          </div> <!-- largeBlock ends -->
+          <div class="largeBlock">
+            <h3>Remarks</h3>
+            <ol>
+              <li *ngFor="let remark of detail.property.remarks;let i = index;"> {{remark.value}}</li>
+            </ol>
+            <div class="desp">
+              <p>To the best of our knowledge , all matter of factual nature discussed in this Report are true and
+                correct. No important factors have been intentionally overlooked or withheld.</p>
+            </div>
+          </div> <!-- largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Opinion</h3>
+            <ol>
+              <li>In our opinion, the Property may be taken as mortgage for the Bank value recommended in the Property
+                Valuation Report. However, all the remarks made above shall be taken into consideration and all Legal
+                Documents shall be scrutinized by Legal Expert.
+              </li>
+              <li>They said properties have been verified after visiting the site and measuring it as shown by the
+                Client
+                for the purpose of mortgaging it in {{detail.property.otherInfo.bankName}}.
+              </li>
+            </ol>
+          </div> <!-- largeBlock ends -->
+
+          <div class="largeBlock page-break ">
+            <h3>Importance of Location</h3>
+            <div class="desp">
+              <p>The Property is located at {{detail.property.location.vdc}}
+                Municipality-{{detail.property.location.wardNo}}, {{detail.property.location.district}} District..
+                Travelling around {{detail.property.triangulation.parameterBoundaries.south}}km South west from {{detail.property.location.vdc}}, we can reach this property.</p>
+            </div>
+            <div class="merit-list page-break ">
+              <h4>Followings are some of the merits of the location:</h4>
+              <ol>
+                <li *ngFor="let importance of detail.property.importances">{{importance.value}}</li>
+              </ol>
+            </div>
+          </div> <!-- largeBlock ends -->
+        </div> <!--page ends-->
+      </div>
+    </div>
+  </div>
+</mat-sidenav-container>

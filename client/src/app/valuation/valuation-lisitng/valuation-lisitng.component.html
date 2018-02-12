@@ -1,0 +1,89 @@
+<app-loader *ngIf="loader"></app-loader>
+<mat-sidenav-container class="sidenav-fab-container">
+  <mat-sidenav #sidenav mode="side" opened="true" class="mat-elevation-z2">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <div class="main-container">
+
+    <header>
+      <app-header (openNav)="toggleNav()"></app-header>
+    </header>
+    <div class="container">
+      <h2 class="page-ttl">Valuation Listing </h2>
+      <mat-card class="example-card">
+        <mat-card-content>
+          <div class="dataLisitingTable">
+            <div class="datatable-header">
+              <mat-form-field class="search-form-field">
+                <input matInput type="text" placeholder="Filter" (keyup.enter)="searchFunction()" [(ngModel)]="value"/>
+                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="example-container">
+
+              <table class="table" *ngIf="valuations">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Client Name</th>
+                  <th>Contact</th>
+                  <th>Type of Property</th>
+                  <th>Status</th>
+                  <th>Bank Name</th>
+                  <th>Document Status</th>
+                  <th>Summary</th>
+                  <th>Full Report</th>
+                </tr>
+                </thead>
+                <tbody *ngIf="valuations.length > 0">
+                <tr
+                  *ngFor="let valuation of valuations | paginate: { itemsPerPage: 10, currentPage: currentPage,  totalItems: count }; let i = index;">
+                  <td>{{i+1}}</td>
+                  <td>
+                    <ul class="valuation-clientlist">
+                      <li *ngFor="let client of valuation.clients">{{ client.fullName }}</li>
+                    </ul>
+                  </td>
+                  <td>
+                    <ul class="valuation-clientlist">
+                      <li *ngFor="let client of valuation.clients">{{ client.contactNumber }}</li>
+                    </ul>
+                  </td>
+                  <td>{{ valuation.typeOfProperty }}</td>
+                  <td>{{ valuation.statusOfReport }}</td>
+                  <td>{{ valuation.bankName }}</td>
+                  <td>
+                    <button mat-button color="primary" (click)="addDocuments(valuation.id)">Docs. Status</button>
+                  </td>
+                  <td>
+                    <button mat-button color="primary" (click)="viewSummary(valuation.id)">View Summary</button>
+                  </td>
+                  <td>
+                    <button mat-button color="primary" (click)="viewDetailSummary(valuation.id)">View Full Report
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+                <tbody *ngIf="valuations.length === 0">
+                <tr>
+                  <td>No records found!</td>
+                </tr>
+                </tbody>
+              </table>
+              <pagination-controls class="my-pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+    </div>
+  </div>
+</mat-sidenav-container>
+
+
+
