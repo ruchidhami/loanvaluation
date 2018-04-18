@@ -2,6 +2,11 @@
 
 const Valuation = require('../models/valuation.model');
 
+/**
+ *
+ * @param params
+ * @returns {Promise}
+ */
 function create(params) {
   return new Promise((resolve, reject) => {
     let valuation = new Valuation(params);
@@ -16,6 +21,12 @@ function create(params) {
   })
 }
 
+/**
+ *
+ * @param valuationId
+ * @param params
+ * @returns {Promise}
+ */
 function update(valuationId, params) {
   return new Promise((resolve, reject) => {
     Valuation.update({
@@ -32,6 +43,11 @@ function update(valuationId, params) {
   })
 }
 
+/**
+ *
+ * @param valuationId
+ * @returns {Promise}
+ */
 function deleteValuation(valuationId) {
   return new Promise((resolve, reject) => {
     Valuation.findOneAndRemove({"_id": valuationId})
@@ -44,6 +60,11 @@ function deleteValuation(valuationId) {
   })
 }
 
+/**
+ *
+ * @param query
+ * @returns {Promise}
+ */
 function findAll(query) {
   return new Promise((resolve, reject) => {
     const perPage = +query.limit;
@@ -51,9 +72,11 @@ function findAll(query) {
     const params = {
       "client.fullName": "",
       "client.contactNumber": "",
+      "client.clientOrganization": "",
       "property.otherInfo.bankName": "",
       "propertyType.typeOfProperty": "",
-      "propertyType.statusOfReport": ""
+      "propertyType.statusOfReport": "",
+      "images": ""
     };
 
     Valuation.find({}, params)
@@ -93,6 +116,8 @@ function search(params) {
           'client.fullName': params.q
         }, {
           'client.contactNumber': params.q
+        }, {
+          'client.clientOrganization': params.q
         }, {
           'owner.fullName': params.q
         }, {

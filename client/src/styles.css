@@ -848,6 +848,12 @@ label.normal-ttl {
   top: -27px;
 }
 
+.date-pick {
+  position: absolute;
+  right: 0;
+  top: 7px;
+}
+
 
 
 @media print {
@@ -881,6 +887,9 @@ label.normal-ttl {
     margin: 0px !important;
   }
 
+  .hidePrint{
+    display: none !important;
+  }
 
 
 }

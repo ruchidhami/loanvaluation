@@ -477,7 +477,7 @@
                 <td>{{getAnnaFromSqMeter()}}</td>
                 <td>{{detail.property.propertyValuation.governmentRate}}</td>
                 <td>{{getGovernmentAmount()}}</td>
-                <td>{{getNumberInWords(totalGovAnnaInNumber)}}</td>
+                <td>{{getNumberInWords(totalGovAnnaInNumber) | titlecase }}</td>
               </tr>
               <tr>
                 <td>2</td>
@@ -485,7 +485,7 @@
                 <td>{{getAnnaFromSqMeter()}}</td>
                 <td>{{detail.property.propertyValuation.marketRate}}</td>
                 <td>{{getMarketAmount()}}</td>
-                <td>{{getNumberInWords(totalMarAnnaInNumber)}}</td>
+                <td>{{getNumberInWords(totalMarAnnaInNumber) | titlecase}}</td>
               </tr>
               </tbody>
               <tfoot>
@@ -811,7 +811,8 @@
             <div class="desp">
               <p>The Property is located at {{detail.property.location.vdc}}
                 Municipality-{{detail.property.location.wardNo}}, {{detail.property.location.district}} District..
-                Travelling around {{detail.property.triangulation.parameterBoundaries.south}}km South west from {{detail.property.location.vdc}}, we can reach this property.</p>
+                Travelling around {{detail.property.triangulation.parameterBoundaries.south}}km South west from
+                {{detail.property.location.vdc}}, we can reach this property.</p>
             </div>
             <div class="merit-list page-break ">
               <h4>Followings are some of the merits of the location:</h4>

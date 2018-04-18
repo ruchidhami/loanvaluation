@@ -1,4 +1,4 @@
-'use strict';
+='use strict';
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -17,6 +17,132 @@ const valuationSchema = new Schema({
       }
     },
     citizenshipClient: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    citizenshipOwner: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    companyDoc: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    registrationDoc: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    panDoc: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    taxClearCertificate: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    charkillaOrg: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    bluePrint: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    trace: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    tiroRasid: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    gharBatoSifarish: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    approvedBuildingDrawing: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    constructionApprovalCertificate: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    constructionCompletionCertificate: {
+      status: {
+        type: Boolean,
+        default: false
+      },
+      url: {
+        type: String
+      }
+    },
+    buildingTaxPaymentReceipt: {
       status: {
         type: Boolean,
         default: false
@@ -227,7 +353,8 @@ const valuationSchema = new Schema({
       fatherInLawName: {
         type: String
       }
-    }
+    },
+    documentImages: []
   }],
   property: {
     plotNo: {

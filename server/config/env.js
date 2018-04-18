@@ -9,7 +9,9 @@ const devRequiredParams = [
 
 const requiredParams = [
   'PORT',
-  'MONGODB_URI'
+  'MONGODB_URI',
+  'AMAZON_URL',
+  'BUCKET_NAME'
 ];
 
 

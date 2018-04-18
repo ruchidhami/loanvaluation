@@ -73,7 +73,7 @@
                 <td>{{getAnnaFromSqMeter()}}</td>
                 <td>{{detail.property.propertyValuation.governmentRate}}</td>
                 <td>{{getGovernmentAmount()}}</td>
-                <td>{{getNumberInWords(totalGovAnnaInNumber)}}</td>
+                <td>{{getNumberInWords(totalGovAnnaInNumber) | titlecase}}</td>
               </tr>
               <tr>
                 <td>2</td>
@@ -81,7 +81,7 @@
                 <td>{{getAnnaFromSqMeter()}}</td>
                 <td>{{detail.property.propertyValuation.marketRate}}</td>
                 <td>{{getMarketAmount()}}</td>
-                <td>{{getNumberInWords(totalMarAnnaInNumber)}}</td>
+                <td>{{getNumberInWords(totalMarAnnaInNumber) | titlecase}}</td>
               </tr>
               </tbody>
               <tfoot>

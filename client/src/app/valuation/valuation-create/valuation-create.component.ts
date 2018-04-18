@@ -34,13 +34,19 @@ export class ValuationCreateComponent implements OnInit {
   @ViewChild('sidenav') sideNav: any;
   toggleNav: any;
 
+  valueData: string;
+
   ngOnInit() {
     $(document).ready(function () {
-      $("#date-picker").nepaliDatePicker({
+      $("#citizenshipInformationPicker").nepaliDatePicker({
         dateFormat: "%D, %M %d, %y",
         closeOnDateSelect: true
+      }).on("dateChange", function () {
+        this.valueData = $(this).val();
       });
+
     });
+
 
     this.addClient();
     this.addOwner();
@@ -220,9 +226,17 @@ export class ValuationCreateComponent implements OnInit {
     })
   }
 
+
   removeClient(index) {
     this.clients.splice(index, 1);
   }
+
+  // changeCitizenShipIssuedDate(index) {
+  //   $("#citizenshipInformationPicker").on("select", function (event) {
+  //     var selected = $(this).val();
+  //     this.onModelChange(selected);
+  //   });
+  // }
 
   addOwner() {
     this.owners.push({
@@ -322,6 +336,7 @@ export class ValuationCreateComponent implements OnInit {
   selectedIndex: number;
 
   selectTab(index: number, isValid: boolean): void {
+    debugger;
     if (isValid) {
       this.selectedIndex = index;
     }

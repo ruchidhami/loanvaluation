@@ -103,16 +103,19 @@
                             </mat-form-field>
                           </td>
                           <td>
-
                             <mat-form-field>
-                              <input matInput md-no-float name="date"
-                                     [(ngModel)]="client.citizenshipInformation.issuedDate" id="date-picker"
-                                     #issueddDate="ngModel"
+                              <input matInput name="{{i}}"
+                                     id="citizenshipInformationPicker"
+                                     [(ngModel)]="client.citizenshipInformation.issuedDate"
+                                     #citizenshipInformationPicker="ngModel"
                                      placeholder="Issued Date"
                                      required>
-                              <!--<input matInput disabled [matDatepicker]="issuedDate" name="issuedDate{{i+1}}"-->
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+                              <!--<input matInput [matDatepicker]="issuedDate" name="issuedDate{{i+1}}"-->
                               <!--[(ngModel)]="client.citizenshipInformation.issuedDate"-->
-                              <!--id="issuedDate{{i+1}}" #issuedDate="ngModel"-->
+                              <!--id="citizenshipInformationPicker"-->
                               <!--placeholder="Issued Date"-->
                               <!--required>-->
                               <!--<mat-datepicker-toggle-->

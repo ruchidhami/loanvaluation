@@ -1,59 +1,15 @@
 <h1 mat-dialog-title>Add Documents</h1>
 <div mat-dialog-content>
   <p>Please check provided Document</p>
-  <ul class="docsList">
+  <ul class="docsList" *ngFor="let list of uploadedList">
     <li>
-      <mat-checkbox [(ngModel)]="data.apple">Lalpurja Copy</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.banana">Citizenship of client</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.orange">Citizenship of owner</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Company documents</mat-checkbox>
-    <li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes"> Registration doc</mat-checkbox>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes"> Pan/Vat doc</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes"> Tax clearance certificate</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Charkilla Original</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Blue Print</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Trace</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Tiro Rasid</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Gharbato Siffarish</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Building Drawing</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Construction Approval Certificate</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Construction Completion Certificate</mat-checkbox>
-    </li>
-    <li>
-      <mat-checkbox [(ngModel)]="data.grapes">Tax payment receipt</mat-checkbox>
+      <mat-checkbox [(ngModel)]="list.status">{{list.displayName}}</mat-checkbox>
+      <input type="file" (change)="uploadFile($event, list.key)">
     </li>
   </ul>
 
 
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data.docs" tabindex="2">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
 </div>

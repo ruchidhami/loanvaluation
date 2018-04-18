@@ -52,11 +52,17 @@
                       <li *ngFor="let client of valuation.clients">{{ client.contactNumber }}</li>
                     </ul>
                   </td>
-                  <td>{{ valuation.typeOfProperty }}</td>
-                  <td>{{ valuation.statusOfReport }}</td>
+                  <td *ngIf="valuation.typeOfProperty === 'lnb'">Land and Building</td>
+                  <td *ngIf="valuation.typeOfProperty === 'land'">Land</td>
+                  <td *ngIf="valuation.statusOfReport === 'siteVisited'">Site visited</td>
+                  <td *ngIf="valuation.statusOfReport === 'startShortly'">Start shortly</td>
+                  <td *ngIf="valuation.statusOfReport === 'isOnHold'">Is on hold</td>
+                  <td *ngIf="valuation.statusOfReport === 'summarySent'">Summary sent</td>
+                  <td *ngIf="valuation.statusOfReport === 'reportCompleted'">Report completed</td>
+                  <td *ngIf="valuation.statusOfReport === 'reportSent'">Report sent</td>
                   <td>{{ valuation.bankName }}</td>
                   <td>
-                    <button mat-button color="primary" (click)="addDocuments(valuation.id)">Docs. Status</button>
+                    <button mat-button color="primary" (click)="addDocuments(valuation)">Docs. Status</button>
                   </td>
                   <td>
                     <button mat-button color="primary" (click)="viewSummary(valuation.id)">View Summary</button>

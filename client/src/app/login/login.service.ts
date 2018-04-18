@@ -9,7 +9,7 @@ export class LoginService {
   constructor(private http: Http) {
   }
 
-  API_BASE_URL = 'https://loan-valuation-api.herokuapp.com/v1';
+  API_BASE_URL = environment['API_BASE_URL'];
 
 
   login(data) {

@@ -8,12 +8,16 @@
   },
   "license": "ISC",
   "dependencies": {
+    "connect-multiparty": "^2.1.0",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
     "mongoosastic": "^4.3.0",
     "mongoose": "^4.13.4",
     "nconf": "^0.9.1",
     "require-dir": "^0.3.2",
+    "s3fs": "^2.5.0",
     "underscore": "^1.8.3"
   }
 }

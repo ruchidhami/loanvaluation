@@ -11,7 +11,9 @@ export class ValuationService {
   constructor(private http: Http) {
   }
 
-  API_BASE_URL = 'https://loan-valuation-api.herokuapp.com/v1';
+  // API_BASE_URL = 'https://loan-valuation-api.herokuapp.com/v1';
+
+  API_BASE_URL = environment['API_BASE_URL']
 
   createValaution(data) {
     return this.http.post(this.API_BASE_URL + '/valuation', data)
@@ -62,6 +64,14 @@ export class ValuationService {
 
   deleteValaution(valuationId) {
     return this.http.delete(this.API_BASE_URL + '/valuation/' + valuationId)
+      .map(response => {
+        return (response.json());
+      })
+      .catch(this.handleError);
+  }
+
+  imageUpload(formData, data) {
+    return this.http.patch(`${this.API_BASE_URL}${'/upload/'}${data.id}${'?name='}${data.name}`, formData)
       .map(response => {
         return (response.json());
       })
