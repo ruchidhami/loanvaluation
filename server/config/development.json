@@ -1,6 +1,6 @@
 {
     "PORT": 3001,
-    "MONGODB_URI": "mongodb://admin:admin@ds115446.mlab.com:15446/loan_valuation_database",
+    "MONGODB_URI":"mongodb://127.0.0.1/LoanValuation",
     "FIRST_NAME":"Ruchi",
     "LAST_NAME":"Dhami",
     "USERNAME":"rdhami",
