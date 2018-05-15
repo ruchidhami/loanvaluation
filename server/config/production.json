@@ -1,10 +1,12 @@
 {
-    "PORT": 3001,
-    "MONGODB_URI": "mongodb://admin:admin@ds115446.mlab.com:15446/loan_valuation_database",
-    "FIRST_NAME":"admin",
-    "LAST_NAME":"admin",
-    "USERNAME":"admin",
-    "EMAIL":"admin@admin.com",
-    "PASSWORD":"password",
-    "ROLE":"admin"
+  "PORT": 3001,
+  "MONGODB_URI": "mongodb://admin:admin@ds115446.mlab.com:15446/loan_valuation_database",
+  "FIRST_NAME": "admin",
+  "LAST_NAME": "admin",
+  "USERNAME": "admin",
+  "EMAIL": "admin@admin.com",
+  "PASSWORD": "password",
+  "ROLE": "admin",
+  "FIRE_BASE_BUCKET_NAME": "gs://test-demo-80eb8.appspot.com",
+  "FIRE_BASE_URL":"https://storage.googleapis.com/test-demo-80eb8.appspot.com/"
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from "@angular/router";
 
 import { ValuationService } from '../valuation.service';
@@ -85,7 +85,6 @@ export class ValuationLisitngComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.docs = result;
     });
   }
@@ -97,8 +96,8 @@ export class ValuationLisitngComponent implements OnInit {
   templateUrl: 'valuation-docs.component.html',
   providers: [ValuationService]
 })
-export class ValuationDocsComponent implements OnInit {
 
+export class ValuationDocsComponent implements OnInit {
   constructor(private valuationService: ValuationService,
               private snackBar: MatSnackBar,
               public dialogRef: MatDialogRef<ValuationDocsComponent>,
@@ -117,7 +116,6 @@ export class ValuationDocsComponent implements OnInit {
   uploadedList = [];
 
   getPopUpList() {
-    debugger;
     this.uploadedList = [{
       displayName: 'Lalpurja Copy',
       key: "lalpurja",

@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  API_BASE_URL: 'https://loan-valuation.herokuapp.com/v1'
 };

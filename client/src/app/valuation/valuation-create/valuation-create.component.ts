@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { ValuationService } from '../valuation.service';
 import { ConverterService, NPLandUnit } from '../converter.service';
@@ -15,7 +15,7 @@ declare var $: any;
   styleUrls: ['./valuation-create.component.css'],
   providers: [ValuationService, ConverterService]
 })
-export class ValuationCreateComponent implements OnInit {
+export class ValuationCreateComponent implements OnInit, AfterViewInit {
 
   constructor(private valuationService: ValuationService,
               private converterService: ConverterService,
@@ -29,53 +29,8 @@ export class ValuationCreateComponent implements OnInit {
   valuationId: string;
   action: string;
   loader: boolean;
-
-
-  @ViewChild('sidenav') sideNav: any;
-  toggleNav: any;
-
-  valueData: string;
-
-  ngOnInit() {
-    $(document).ready(function () {
-      $("#citizenshipInformationPicker").nepaliDatePicker({
-        dateFormat: "%D, %M %d, %y",
-        closeOnDateSelect: true
-      }).on("dateChange", function () {
-        this.valueData = $(this).val();
-      });
-
-    });
-
-
-    this.addClient();
-    this.addOwner();
-    this.addRemarks();
-    this.addImportance();
-
-    this.toggleNav = () => {
-      this.sideNav.toggle();
-    };
-
-    this.property.triangulation.unitOfMeasurement = 'meter';
-    this.totalLandAreaPerLalPurja.push({
-      ropani: 0,
-      anna: 0,
-      paisa: 0,
-      daam: 0,
-      total: 0
-    });
-    this.valuationId = this.activatedRoute.snapshot.paramMap.get('valuationId');
-    this.action = this.activatedRoute.snapshot.paramMap.get('action');
-    this.property.triangulation.unitOfMeasurement = 'meter';
-
-    if (this.action === 'edit') {
-      this.fetchValuation();
-    }
-
-  }
-
   toggoleShowHide: string = 'none';
+
   clients = [];
   owners = [];
   propertyType = {
@@ -161,11 +116,11 @@ export class ValuationCreateComponent implements OnInit {
       ownershipComment: '',
       revenue: {
         paidValue: true,
-        paymentDate: new Date(),
+        paymentDate: '',
         comments: ''
       },
       normalValue: true,
-      registrationDate: new Date(),
+      registrationDate: '',
       normalSale: {
         value: true,
         comment: ''
@@ -182,7 +137,7 @@ export class ValuationCreateComponent implements OnInit {
       },
       boundaryParameters: {
         value: true,
-        paymentReceipt: new Date(),
+        paymentReceipt: '',
         comment: ''
       },
       freeAccessValue: true,
@@ -198,11 +153,94 @@ export class ValuationCreateComponent implements OnInit {
       bankName: '',
       bankAddress: '',
       preparedBy: '',
-      reportDate: new Date(),
+      reportDate: '',
       coordinates: []
     }
   };
 
+
+  @ViewChild('sidenav') sideNav: any;
+  toggleNav: any;
+
+  valueData: string;
+
+  ngOnInit() {
+    this.addClient();
+    this.addOwner();
+    this.addRemarks();
+    this.addImportance();
+
+    this.toggleNav = () => {
+      this.sideNav.toggle();
+    };
+
+    this.property.triangulation.unitOfMeasurement = 'meter';
+    this.totalLandAreaPerLalPurja.push({
+      ropani: 0,
+      anna: 0,
+      paisa: 0,
+      daam: 0,
+      total: 0
+    });
+    this.valuationId = this.activatedRoute.snapshot.paramMap.get('valuationId');
+    this.action = this.activatedRoute.snapshot.paramMap.get('action');
+    this.property.triangulation.unitOfMeasurement = 'meter';
+
+    if (this.action === 'edit') {
+      this.fetchValuation();
+    }
+
+
+  }
+
+  ngAfterViewInit() {
+    var self = this;
+    $('#citizenshipInformationPicker' + 0).nepaliDatePicker().on("dateChange", function () {
+      self.clients[0].citizenshipInformation.issuedDate = $('#citizenshipInformationPicker').val();
+    });
+
+    $('#ownerCitizenshipInformationPicker' + 0).nepaliDatePicker().on("dateChange", function () {
+      self.owners[0].citizenshipInformation.issuedDate = $('#ownerCitizenshipInformationPicker').val();
+    });
+  }
+
+  changeNepaliDate(event, i, value) {
+    event.preventDefault();
+    event.stopPropagation();
+    var self = this;
+    if (value === 'client') {
+      $('#citizenshipInformationPicker' + i).nepaliDatePicker().on("dateChange", function (e) {
+        self.clients[i].citizenshipInformation.issuedDate = e.datePickerData.formattedDate;
+      });
+    } else if (value === 'owner') {
+      $('#ownerCitizenshipInformationPicker' + i).nepaliDatePicker().on("dateChange", function (e) {
+        self.owners[i].citizenshipInformation.issuedDate = e.datePickerData.formattedDate;
+      });
+    }
+  }
+
+  selectNepaliDate(event, value) {
+    event.preventDefault();
+    event.stopPropagation();
+    var self = this;
+    if (value === 'paymentDate') {
+      $('#paymentDate').nepaliDatePicker().on("dateChange", function (e) {
+        self.property.legalAspectsOfProperty.revenue.paymentDate = e.datePickerData.formattedDate;
+      });
+    } else if (value === 'registrationDate') {
+      $('#registrationDate').nepaliDatePicker().on("dateChange", function (e) {
+        self.property.legalAspectsOfProperty.registrationDate = e.datePickerData.formattedDate;
+      });
+    } else if (value === 'paymentReceipt') {
+      $('#paymentReceipt').nepaliDatePicker().on("dateChange", function (e) {
+        self.property.legalAspectsOfProperty.boundaryParameters.paymentReceipt = e.datePickerData.formattedDate;
+      });
+    } else if (value === 'reportDate') {
+      $('#reportDate').nepaliDatePicker().on("dateChange", function (e) {
+        self.property.otherInfo.reportDate = e.datePickerData.formattedDate;
+      });
+    }
+  }
 
   addClient() {
     this.clients.push({
@@ -223,20 +261,14 @@ export class ValuationCreateComponent implements OnInit {
         spouse: '',
         fatherInLawName: ''
       }
-    })
-  }
+    });
 
+  }
 
   removeClient(index) {
     this.clients.splice(index, 1);
   }
 
-  // changeCitizenShipIssuedDate(index) {
-  //   $("#citizenshipInformationPicker").on("select", function (event) {
-  //     var selected = $(this).val();
-  //     this.onModelChange(selected);
-  //   });
-  // }
 
   addOwner() {
     this.owners.push({
@@ -249,7 +281,7 @@ export class ValuationCreateComponent implements OnInit {
       contactNumber: '',
       citizenshipInformation: {
         citizenshipNumber: '',
-        issuedDate: new Date(),
+        issuedDate: '',
         issuedOffice: '',
         fatherName: '',
         motherName: '',
@@ -336,7 +368,6 @@ export class ValuationCreateComponent implements OnInit {
   selectedIndex: number;
 
   selectTab(index: number, isValid: boolean): void {
-    debugger;
     if (isValid) {
       this.selectedIndex = index;
     }
@@ -348,7 +379,7 @@ export class ValuationCreateComponent implements OnInit {
     const sideC = +value.sideC;
     const totalParameter = (sideA + sideB + sideC) / 2;
     const sideAreaCalculation = +Math.sqrt((totalParameter * (totalParameter - sideA) *
-    (totalParameter - sideB) * (totalParameter - sideC))).toFixed(4);
+      (totalParameter - sideB) * (totalParameter - sideC))).toFixed(4);
     return sideAreaCalculation;
   }
 
@@ -439,7 +470,7 @@ export class ValuationCreateComponent implements OnInit {
         }
 
         this.buildingTypeInformation.costInfo.costOfWorker = totalSum + totalSumOfOtherFloor;
-        this.buildingTypeInformation.costInfo.sanitaryCharges = (+this.buildingTypeInformation.costInfo.costOfWorker * 0.1 ).toString();
+        this.buildingTypeInformation.costInfo.sanitaryCharges = (+this.buildingTypeInformation.costInfo.costOfWorker * 0.1).toString();
         this.buildingTypeInformation.costInfo.totalCost = (+this.buildingTypeInformation.costInfo.costOfWorker + +this.buildingTypeInformation.costInfo.sanitaryCharges).toString();
       }
     } else {

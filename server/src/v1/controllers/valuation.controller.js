@@ -1,20 +1,19 @@
 "use strict";
 
 const Promise = require('bluebird');
+const admin = require("firebase-admin");
 
-const S3FS = require('s3fs');
-
+const serviceAccount = require('../../../config/service-account');
 const envConfig = require('../../../config/env');
 
 const ValuationService = require('../../services/valuation.service');
 
-// const s3fsImpl = new S3FS('loantestbucket123', {
-//   accessKeyId: 'AKIAIQLUNAEINOX2N5SQ',
-//   secretAccessKey: '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'
-// });
-//
-// s3fsImpl.create();
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: envConfig.get('FIRE_BASE_BUCKET_NAME')
+});
 
+const bucket = admin.storage().bucket();
 
 function createValuation(req, res, next) {
   let params = req.body;
@@ -143,109 +142,66 @@ function fetchAll(req, res, next) {
   }
 }
 
-function fetch(req, res, next) {
-  ValuationService.findOne(req.params.id)
-    .then(fetchValuation => {
-      res.send(fetchValuation)
-    })
-    .catch(err => {
-      next(err);
-    })
+async function fetch(req, res, next) {
+  try {
+    let fetchValuation = await ValuationService.findOne(req.params.id);
+    res.send(fetchValuation)
+  } catch (err) {
+    next(err);
+  }
 }
 
+// function fetch(req, res, next) {
+//   ValuationService.findOne(req.params.id)
+//     .then(fetchValuation => {
+//       res.send(fetchValuation)
+//     })
+//     .catch(err => {
+//       next(err);
+//     })
+// }
+
 function upload(req, res, next) {
-  // // let imageName = req.query.name;
-  // // const file = req.files.image;
-  // // const stream = fs.createReadStream(file.path);
-  // // s3fsImpl.writeFile(file.originalFilename, stream, {"ContentType": file.type})
-  // //   .then(function () {
-  //     return ValuationService.findOne(req.params.id)
-  //       .then(valuations => {
-  //         // const valuationImage = valuations.images;
-  //         // valuationImage[imageName] = {
-  //         //   status: true,
-  //         //   url: envConfig.get("AMAZON_URL") + envConfig.get("BUCKET_NAME") + file.originalFilename
-  //         // };
-  //         const valuationImage = {
-  //           lalpurja: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           citizenshipClient: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           citizenshipOwner: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           companyDoc: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           registrationDoc: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           panDoc: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           taxClearCertificate: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           charkillaOrg: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           bluePrint: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           trace: {
-  //             status: false,
-  //             url:""
-  //           },
-  //           tiroRasid: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           gharBatoSifarish: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           approvedBuildingDrawing: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           constructionApprovalCertificate: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           constructionCompletionCertificate: {
-  //             status: false,
-  //             url: ""
-  //           },
-  //           buildingTaxPaymentReceipt: {
-  //             status: false,
-  //             url: ""
-  //           }
-  //         };
-  //         ValuationService.update(req.params.id, {images: valuationImage})
-  //           .then(() => {
-  //             res.send({
-  //               data: {
-  //                 message: "Image upload successfully"
-  //               },
-  //               success: true
-  //             })
-  //           })
-  //       })
-  //   // })
-  //   .catch(err => {
-  //     next(err)
-  //   })
+  let name = req.file.originalname;
+  let file = bucket.file(name);
+  let imageName = req.query.name;
+
+  if(imageName){
+    file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    }).on('error', function (err) {
+    }).on('finish', function () {
+      file.makePublic(function (err, apiResponse) {
+        return ValuationService.findOne(req.params.id)
+          .then(valuations => {
+            const valuationImage = valuations.images;
+            valuationImage[imageName] = {
+              status: true,
+              url: `${envConfig.get("FIRE_BASE_URL")}${name}`
+            };
+            ValuationService.update(req.params.id, {images: valuationImage})
+              .then(() => {
+                res.send({
+                  data: {
+                    message: "Image upload successfully"
+                  },
+                  success: true
+                })
+              })
+          })
+          .catch(err => {
+            next(err)
+          })
+      })
+
+    }).end(req.file.buffer);
+  }else {
+    throw new Error('Image must be required.')
+  }
+
+
 }
 
 module.exports = {

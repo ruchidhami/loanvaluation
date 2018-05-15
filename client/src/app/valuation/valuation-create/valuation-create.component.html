@@ -104,8 +104,8 @@
                           </td>
                           <td>
                             <mat-form-field>
-                              <input matInput name="{{i}}"
-                                     id="citizenshipInformationPicker"
+                              <input (click)="changeNepaliDate($event,i,'client')" matInput name="issuedDate{{i+1}}"
+                                     id="citizenshipInformationPicker{{i}}"
                                      [(ngModel)]="client.citizenshipInformation.issuedDate"
                                      #citizenshipInformationPicker="ngModel"
                                      placeholder="Issued Date"
@@ -278,11 +278,21 @@
                           </td>
                           <td>
                             <mat-form-field>
-                              <input matInput disabled [matDatepicker]="issuedDate" placeholder="Issued Date"
-                                     name="issuedDates{{i+1}}" [(ngModel)]="owner.citizenshipInformation.issuedDate"
-                                     id="issuedDates{{i+1}}" #issuedDates="ngModel">
-                              <mat-datepicker-toggle matSuffix [for]="issuedDate"></mat-datepicker-toggle>
-                              <mat-datepicker #issuedDate [disabled]="false"></mat-datepicker>
+                              <input (click)="changeNepaliDate($event,i,'owner')" matInput name="issuedDate{{i+1}}"
+                                     id="ownerCitizenshipInformationPicker{{i}}"
+                                     [(ngModel)]="owner.citizenshipInformation.issuedDate"
+                                     #ownerCitizenshipInformationPicker="ngModel"
+                                     placeholder="Issued Date"
+                                     required>
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+
+                              <!--<input matInput disabled [matDatepicker]="issuedDate" placeholder="Issued Date"-->
+                              <!--name="issuedDates{{i+1}}" [(ngModel)]="owner.citizenshipInformation.issuedDate"-->
+                              <!--id="issuedDates{{i+1}}" #issuedDates="ngModel">-->
+                              <!--<mat-datepicker-toggle matSuffix [for]="issuedDate"></mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #issuedDate [disabled]="false"></mat-datepicker>-->
                             </mat-form-field>
                           </td>
                           <td>
@@ -1194,13 +1204,23 @@
                         <tr>
                           <td colspan="2">
                             <mat-form-field>
-                              <input matInput disabled [matDatepicker]="paymentDate"
+                              <input (click)="selectNepaliDate($event,'paymentDate')" matInput name="paymentDate"
+                                     id="paymentDate"
                                      [(ngModel)]="property.legalAspectsOfProperty.revenue.paymentDate"
-                                     id="paymentDate" #paymentDate="ngModel" name="paymentDate"
+                                     #paymentDate="ngModel"
                                      placeholder="Date of payment:"
                                      required>
-                              <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
-                              <mat-datepicker #paymentDate [disabled]="false"></mat-datepicker>
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+
+                              <!--<input matInput disabled [matDatepicker]="paymentDate"-->
+                                     <!--[(ngModel)]="property.legalAspectsOfProperty.revenue.paymentDate"-->
+                                     <!--id="paymentDate" #paymentDate="ngModel" name="paymentDate"-->
+                                     <!--placeholder="Date of payment:"-->
+                                     <!--required>-->
+                              <!--<mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #paymentDate [disabled]="false"></mat-datepicker>-->
                             </mat-form-field>
                           </td>
                         </tr>
@@ -1238,13 +1258,23 @@
                         <tr>
                           <td colspan="2">
                             <mat-form-field>
-                              <input matInput disabled [matDatepicker]="registrationDate"
+                              <input (click)="selectNepaliDate($event,'registrationDate')" matInput name="registrationDate"
+                                     id="registrationDate"
                                      [(ngModel)]="property.legalAspectsOfProperty.registrationDate"
-                                     id="registrationDate" #registrationDate="ngModel" name="registrationDate"
+                                     #registrationDate="ngModel"
                                      placeholder="Date of registration:"
                                      required>
-                              <mat-datepicker-toggle matSuffix [for]="registrationDate"></mat-datepicker-toggle>
-                              <mat-datepicker #registrationDate [disabled]="false"></mat-datepicker>
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+
+                              <!--<input matInput disabled [matDatepicker]="registrationDate"-->
+                                     <!--[(ngModel)]="property.legalAspectsOfProperty.registrationDate"-->
+                                     <!--id="registrationDate" #registrationDate="ngModel" name="registrationDate"-->
+                                     <!--placeholder="Date of registration:"-->
+                                     <!--required>-->
+                              <!--<mat-datepicker-toggle matSuffix [for]="registrationDate"></mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #registrationDate [disabled]="false"></mat-datepicker>-->
                             </mat-form-field>
                           </td>
                         </tr>
@@ -1376,13 +1406,23 @@
                         <tr>
                           <td>
                             <mat-form-field>
-                              <input matInput disabled [matDatepicker]="paymentReceipt"
+                              <input (click)="selectNepaliDate($event,'paymentReceipt')" matInput name="paymentReceipt"
+                                     id="paymentReceipt"
                                      [(ngModel)]="property.legalAspectsOfProperty.boundaryParameters.paymentReceipt"
-                                     id="paymentReceipt" #paymentReceipt="ngModel" name="paymentReceipt"
+                                     #paymentReceipt="ngModel"
                                      placeholder="Date of payment of Receipt:"
                                      required>
-                              <mat-datepicker-toggle matSuffix [for]="paymentReceipt"></mat-datepicker-toggle>
-                              <mat-datepicker #paymentReceipt [disabled]="false"></mat-datepicker>
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+
+                              <!--<input matInput disabled [matDatepicker]="paymentReceipt"-->
+                                     <!--[(ngModel)]="property.legalAspectsOfProperty.boundaryParameters.paymentReceipt"-->
+                                     <!--id="paymentReceipt" #paymentReceipt="ngModel" name="paymentReceipt"-->
+                                     <!--placeholder="Date of payment of Receipt:"-->
+                                     <!--required>-->
+                              <!--<mat-datepicker-toggle matSuffix [for]="paymentReceipt"></mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #paymentReceipt [disabled]="false"></mat-datepicker>-->
                             </mat-form-field>
 
                           </td>
@@ -1589,12 +1629,22 @@
                           </td>
                           <td>
                             <mat-form-field>
-                              <input matInput disabled [matDatepicker]="reportDate"
+                              <input (click)="selectNepaliDate($event,'reportDate')" matInput name="reportDate"
+                                     id="reportDate"
                                      [(ngModel)]="property.otherInfo.reportDate"
-                                     id="reportDate" #reportDate="ngModel" name="reportDate"
-                                     placeholder="Reported Date">
-                              <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
-                              <mat-datepicker #reportDate [disabled]="false"></mat-datepicker>
+                                     #reportDate="ngModel"
+                                     placeholder="Reported Date"
+                                     required>
+                              <img class="date-pick"
+                                   src="../../../assets/images/datepicker.png" alt="datepicker" width="15px"
+                                   height="auto">
+
+                              <!--<input matInput disabled [matDatepicker]="reportDate"-->
+                                     <!--[(ngModel)]="property.otherInfo.reportDate"-->
+                                     <!--id="reportDate" #reportDate="ngModel" name="reportDate"-->
+                                     <!--placeholder="Reported Date">-->
+                              <!--<mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>-->
+                              <!--<mat-datepicker #reportDate [disabled]="false"></mat-datepicker>-->
                             </mat-form-field>
                           </td>
                         </tr>
@@ -1616,7 +1666,7 @@
               </div> <!--location-info ends-->
             </div> <!--tab-content ends -->
             <div class="action-bar">
-              <button mat-raised-button color="primary" type="submit" *ngIf="!action" (click)="submitValuation()">
+              <button mat-raised-button color="primary" type="submit" *ngIf="!action" (click)="submitValuation(e)">
                 Submit Valuation
               </button>
               <button mat-raised-button color="primary" type="submit" *ngIf="action === 'edit' "
@@ -1630,5 +1680,6 @@
     </div>
   </div>
 </mat-sidenav-container>
+
 
 

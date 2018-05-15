@@ -58,7 +58,5 @@ typings/
 # IDE files
 .idea
 
-# environment files
-config/*.json
 
 

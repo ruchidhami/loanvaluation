@@ -4,14 +4,13 @@ const path = require('path');
 
 const nconf = module.exports = require('nconf');
 
-const devRequiredParams = [
-];
+const devRequiredParams = [];
 
 const requiredParams = [
   'PORT',
   'MONGODB_URI',
-  'AMAZON_URL',
-  'BUCKET_NAME'
+  'FIRE_BASE_BUCKET_NAME',
+  'FIRE_BASE_URL'
 ];
 
 
